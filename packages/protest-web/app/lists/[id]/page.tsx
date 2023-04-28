@@ -8,6 +8,13 @@ const ListPage = async ({
   };
 }) => {
   const xata = getXataClient();
+
+  const list = await xata.db.lists
+    .filter({
+      id: params.id,
+    })
+    .getFirst();
+
   const content = await xata.db.content
     .filter({
       "list.id": params.id,
@@ -17,7 +24,8 @@ const ListPage = async ({
   const { id } = params;
   return (
     <div>
-      <h1>List {id}</h1>
+      <h1>{list?.name}</h1>
+      <br />
       <div>{JSON.stringify(content, null, 2)}</div>
     </div>
   );
