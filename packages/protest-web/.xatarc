@@ -1,6 +1,6 @@
 {
   "databaseURL": "https://Protest-37ev59.us-east-1.xata.sh/db/protest-example",
   "codegen": {
-    "output": "xata/xata.ts"
+    "output": "xata/index.ts"
   }
 }
