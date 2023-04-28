@@ -92,6 +92,9 @@ importers:
       '@types/react-dom':
         specifier: 18.2.1
         version: 18.2.1
+      '@xata.io/client':
+        specifier: ^0.23.5
+        version: 0.23.5(typescript@5.0.4)
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.23)
@@ -2661,6 +2664,14 @@ packages:
 
   /@vue/shared@3.2.47:
     resolution: {integrity: sha512-BHGyyGN3Q97EZx0taMQ+OLNuZcW3d37ZEVmEAyeoA9ERdGvm9Irc/0Fua8SNyOtV1w6BS4q25wbMzJujO9HIfQ==}
+    dev: false
+
+  /@xata.io/client@0.23.5(typescript@5.0.4):
+    resolution: {integrity: sha512-xNi6eLW6kXi6Ka8Q/TD/4+uGsfAUQ/Mna4CrPZGEQmPHRCqcwuSyaixPcJIaEO0mYfFGFjn5iUyvc4PLQ0rtiw==}
+    peerDependencies:
+      typescript: '>=4.5'
+    dependencies:
+      typescript: 5.0.4
     dev: false
 
   /abortcontroller-polyfill@1.7.5:
