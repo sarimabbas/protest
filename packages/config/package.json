@@ -27,6 +27,15 @@
     "*": {
       "tailwind": [
         "src/tailwind/index.ts"
+      ],
+      "tsconfig/base": [
+        "src/tsconfig/base.json"
+      ],
+      "tsconfig/nextjs": [
+        "src/tsconfig/nextjs.json"
+      ],
+      "tsconfig/react-library": [
+        "src/tsconfig/react-library.json"
       ]
     }
   },
