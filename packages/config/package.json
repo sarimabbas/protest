@@ -1,12 +1,43 @@
 {
   "name": "@protest/config",
   "version": "0.0.0",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "exports": {
+    "eslint": {
+      "import": "./src/eslint/index.js",
+      "require": "./src/eslint/index.js"
+    },
+    "tailwind": {
+      "import": "./src/tailwind/index.ts",
+      "require": "./src/tailwind/index.ts"
+    },
+    "tsconfig/base": {
+      "import": "./src/tsconfig/base.json",
+      "require": "./src/tsconfig/base.json"
+    },
+    "tsconfig/nextjs": {
+      "import": "./src/tsconfig/nextjs.json",
+      "require": "./src/tsconfig/nextjs.json"
+    },
+    "tsconfig/react-library": {
+      "import": "./src/tsconfig/react-library.json",
+      "require": "./src/tsconfig/react-library.json"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "tailwind": [
+        "src/tailwind/index.ts"
+      ]
+    }
+  },
   "license": "MIT",
   "dependencies": {
     "tailwindcss": "^3.3.2",
-    "tailwindcss-animate": "^1.0.5"
+    "tailwindcss-animate": "^1.0.5",
+    "eslint-config-next": "latest",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react": "7.28.0",
+    "eslint-config-turbo": "latest"
   },
   "publishConfig": {
     "access": "public"
