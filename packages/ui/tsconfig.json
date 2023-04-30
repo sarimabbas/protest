@@ -1,5 +1,5 @@
 {
-  "extends": "@protest/config/tsconfig/react-library.json",
+  "extends": "@protest/config/tsconfig/react-library",
   "include": ["src"],
   "exclude": ["dist", "build", "node_modules"]
 }

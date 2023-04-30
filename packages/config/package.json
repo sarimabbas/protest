@@ -2,40 +2,13 @@
   "name": "@protest/config",
   "version": "0.0.0",
   "exports": {
-    "eslint": {
-      "import": "./src/eslint/index.js",
-      "require": "./src/eslint/index.js"
-    },
-    "tailwind": {
-      "import": "./src/tailwind/index.ts",
-      "require": "./src/tailwind/index.ts"
-    },
-    "tsconfig/base": {
-      "import": "./src/tsconfig/base.json",
-      "require": "./src/tsconfig/base.json"
-    },
-    "tsconfig/nextjs": {
-      "import": "./src/tsconfig/nextjs.json",
-      "require": "./src/tsconfig/nextjs.json"
-    },
-    "tsconfig/react-library": {
-      "import": "./src/tsconfig/react-library.json",
-      "require": "./src/tsconfig/react-library.json"
-    }
+    "eslint": "./src/eslint/index.js",
+    "tailwind": "./src/tailwind/index.ts"
   },
   "typesVersions": {
     "*": {
       "tailwind": [
         "src/tailwind/index.ts"
-      ],
-      "tsconfig/base": [
-        "src/tsconfig/base.json"
-      ],
-      "tsconfig/nextjs": [
-        "src/tsconfig/nextjs.json"
-      ],
-      "tsconfig/react-library": [
-        "src/tsconfig/react-library.json"
       ]
     }
   },
