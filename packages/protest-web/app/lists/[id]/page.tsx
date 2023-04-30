@@ -1,3 +1,4 @@
+import { Button } from "@/../ui";
 import { getXataClient } from "@/xata";
 
 const ListPage = async ({
@@ -25,6 +26,7 @@ const ListPage = async ({
   return (
     <div>
       <h1>{list?.name}</h1>
+      <Button variant="outline">Button</Button>
       <br />
       <div>{JSON.stringify(content, null, 2)}</div>
     </div>

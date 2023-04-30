@@ -1,4 +1,4 @@
-import { cn } from "@/utils";
+import { cn } from "@protest/ui";
 import "./globals.css";
 import { Inter } from "next/font/google";
 

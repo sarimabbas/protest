@@ -1,5 +1,5 @@
 {
-  "name": "protest-extension",
+  "name": "@protest/extension",
   "displayName": "Protest",
   "version": "0.0.1",
   "description": "Filter content on social media",
