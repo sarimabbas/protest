@@ -105,7 +105,7 @@ importers:
         version: link:../../configs/eslint
       '@protest/shared':
         specifier: workspace:*
-        version: link:../ui
+        version: link:../shared
       '@protest/tailwind':
         specifier: workspace:*
         version: link:../../configs/tailwind
@@ -149,7 +149,7 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
 
-  packages/ui:
+  packages/shared:
     dependencies:
       class-variance-authority:
         specifier: ^0.6.0

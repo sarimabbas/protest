@@ -1,4 +1,4 @@
-import { Button } from "@/../shared/src";
+import { Button } from "@protest/shared";
 import { getXataClient } from "@/xata";
 
 const ListPage = async ({
