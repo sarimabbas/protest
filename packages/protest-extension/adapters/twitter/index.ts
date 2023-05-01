@@ -6,7 +6,7 @@ export const TwitterAdapter: IAdapter = {
     const elements: IElement[] = [];
     nodes.forEach((node) => {
       const id = node.getAttribute("aria-labelledby");
-      if (id) {
+      if (id && node instanceof HTMLElement) {
         elements.push({ id, domNode: node, hidden: false, fetched: false });
       }
     });

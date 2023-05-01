@@ -1,22 +1,32 @@
-import { IOutputItem, ZPOSTBody, ZPOSTResponse } from "@protest/shared";
+import { IOutputItem, IPOSTResponse, ZPOSTBody } from "@protest/shared";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
+  // validate request body
   const body = await request.json();
-  const parsedBody = ZPOSTBody.safeParse(body);
-  if (parsedBody.success === false) {
-    return NextResponse.json(parsedBody.error, { status: 400 });
+  const zodParsedBody = ZPOSTBody.safeParse(body);
+  if (zodParsedBody.success === false) {
+    const errorResponse: IPOSTResponse = {
+      data: [],
+      success: false,
+      error: zodParsedBody.error.message,
+    };
+    return NextResponse.json(errorResponse, { status: 400 });
   }
 
-  const outputs: IOutputItem[] = parsedBody.data.inputs.map((input) => ({
+  // this is the input data
+  const { data } = zodParsedBody.data;
+
+  // the algorithm
+  const outputs: IOutputItem[] = data.map((input) => ({
     id: input.id,
     show: input.content.length > 0,
   }));
 
-  const parsedResponse = ZPOSTResponse.safeParse({ outputs });
-  if (parsedResponse.success === false) {
-    return NextResponse.json(parsedResponse.error, { status: 500 });
-  }
-
-  return NextResponse.json(parsedResponse);
+  // send back to client
+  const normalResponse: IPOSTResponse = {
+    data: outputs,
+    success: true,
+  };
+  return NextResponse.json(normalResponse);
 };

@@ -10,10 +10,12 @@
     "package": "plasmo package"
   },
   "dependencies": {
+    "@plasmohq/messaging": "^0.2.1",
+    "@protest/shared": "workspace:*",
+    "lodash.throttle": "^4.1.1",
     "plasmo": "0.69.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "lodash.throttle": "^4.1.1"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.4",

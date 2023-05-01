@@ -1,7 +1,9 @@
+import { sendToBackground } from "@plasmohq/messaging";
+import { type IPOSTResponse } from "@protest/shared";
+import throttle from "lodash.throttle";
 import type { PlasmoCSConfig } from "plasmo";
 import type { IElement } from "~adapters/contract";
 import { TwitterAdapter } from "~adapters/twitter";
-import throttle from "lodash.throttle";
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -15,25 +17,27 @@ const shouldHide = throttle(async () => {
   const unfetchedElements = Object.values(elementMap).filter((e) => !e.fetched);
 
   // send to server
-  const response = await fetch("http://localhost:3000/api/lists/1", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const resp: IPOSTResponse = await sendToBackground({
+    name: "content-check",
+    body: {
+      inputs: unfetchedElements.map((e) => ({
+        id: e.id,
+        text: e.domNode.innerText,
+      })),
     },
-    body: JSON.stringify({}),
   });
 
-  // mark fetched elements as fetched
-  unfetchedElements.forEach((e) => {
+  console.log({ resp });
+
+  resp.data.forEach((e) => {
+    // mark fetched elements as fetched
     elementMap[e.id].fetched = true;
-  });
 
-  Object.values(elementMap).forEach((e) => {
-    e.fetched = true;
-    if (e.domNode.innerHTML.toLowerCase().includes("bluesky")) {
-      TwitterAdapter.hide(e);
+    // hide elements that are filtered out
+    if (!e.show) {
+      TwitterAdapter.hide(elementMap[e.id]);
+      elementMap[e.id].hidden = true;
       console.log("hiding element", e);
-      e.hidden = true;
     }
   });
 }, 1500);
@@ -48,12 +52,15 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 window.addEventListener("scroll", () => {
+  console.log("on scroll");
   TwitterAdapter.collect().forEach((e) => {
     if (e.id in elementMap) {
       return;
     }
     elementMap[e.id] = e;
   });
+
+  console.log("calling shouldHide");
   shouldHide();
 });
 

@@ -8,7 +8,7 @@ export const ZInputItem = z.object({
 export type IInputItem = z.infer<typeof ZInputItem>;
 
 export const ZPOSTBody = z.object({
-  inputs: z.array(ZInputItem),
+  data: z.array(ZInputItem),
 });
 
 export type IPOSTBody = z.infer<typeof ZPOSTBody>;
@@ -21,7 +21,10 @@ export const ZOutputItem = z.object({
 export type IOutputItem = z.infer<typeof ZOutputItem>;
 
 export const ZPOSTResponse = z.object({
-  outputs: z.array(ZOutputItem),
+  success: z.boolean(),
+  data: z.array(ZOutputItem),
+  error: z.string().optional(),
+  debug: z.string().optional(),
 });
 
 export type IPOSTResponse = z.infer<typeof ZPOSTResponse>;

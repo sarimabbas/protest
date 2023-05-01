@@ -1,6 +1,6 @@
 export interface IElement {
   id: string;
-  domNode: Element;
+  domNode: HTMLElement;
   hidden: boolean;
   fetched: boolean;
 }
