@@ -4,9 +4,9 @@ importers:
 
   .:
     devDependencies:
-      '@protest/eslint':
+      '@protest/eslint-config':
         specifier: workspace:*
-        version: link:configs/eslint-config-custom
+        version: link:configs/eslint
       eslint:
         specifier: ^7.32.0
         version: 7.32.0
@@ -17,7 +17,7 @@ importers:
         specifier: latest
         version: 1.9.3
 
-  configs/eslint-config-custom:
+  configs/eslint:
     dependencies:
       eslint-config-next:
         specifier: latest
@@ -94,9 +94,9 @@ importers:
 
   packages/protest-web:
     dependencies:
-      '@protest/eslint':
+      '@protest/eslint-config':
         specifier: workspace:*
-        version: link:../../configs/eslint-config-custom
+        version: link:../../configs/eslint
       '@protest/tsconfig':
         specifier: workspace:*
         version: link:../../configs/tsconfig

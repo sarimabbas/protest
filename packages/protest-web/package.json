@@ -22,6 +22,6 @@
     "tailwindcss": "^3.3.2",
     "typescript": "5.0.4",
     "@protest/tsconfig": "workspace:*",
-    "@protest/eslint": "workspace:*"
+    "@protest/eslint-config": "workspace:*"
   }
 }

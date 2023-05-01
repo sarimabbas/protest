@@ -1,5 +1,5 @@
 {
-  "name": "@protest/eslint",
+  "name": "@protest/eslint-config",
   "version": "0.0.0",
   "main": "index.js",
   "license": "MIT",
