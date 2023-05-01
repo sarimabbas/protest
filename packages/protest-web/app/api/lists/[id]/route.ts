@@ -40,5 +40,3 @@ export const POST = async (request: NextRequest) => {
 
   return NextResponse.json(parsedResponse);
 };
-
-type Exx = Awaited<ReturnType<typeof POST>>;

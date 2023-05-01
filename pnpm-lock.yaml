@@ -103,15 +103,15 @@ importers:
       '@protest/eslint-config':
         specifier: workspace:*
         version: link:../../configs/eslint
+      '@protest/shared':
+        specifier: workspace:*
+        version: link:../ui
       '@protest/tailwind':
         specifier: workspace:*
         version: link:../../configs/tailwind
       '@protest/tsconfig':
         specifier: workspace:*
         version: link:../../configs/tsconfig
-      '@protest/ui':
-        specifier: workspace:*
-        version: link:../ui
       '@types/node':
         specifier: 18.15.11
         version: 18.15.11

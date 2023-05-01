@@ -10,7 +10,24 @@ export const config: PlasmoCSConfig = {
 
 const elementMap: Record<string, IElement> = {};
 
-const shouldHide = throttle(() => {
+const shouldHide = throttle(async () => {
+  // get all unfetched elements
+  const unfetchedElements = Object.values(elementMap).filter((e) => !e.fetched);
+
+  // send to server
+  const response = await fetch("http://localhost:3000/api/lists/1", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+  });
+
+  // mark fetched elements as fetched
+  unfetchedElements.forEach((e) => {
+    elementMap[e.id].fetched = true;
+  });
+
   Object.values(elementMap).forEach((e) => {
     e.fetched = true;
     if (e.domNode.innerHTML.toLowerCase().includes("bluesky")) {

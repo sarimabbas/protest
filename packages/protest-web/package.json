@@ -12,7 +12,7 @@
     "@protest/eslint-config": "workspace:*",
     "@protest/tailwind": "workspace:*",
     "@protest/tsconfig": "workspace:*",
-    "@protest/ui": "workspace:*",
+    "@protest/shared": "workspace:*",
     "@types/node": "18.15.11",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",

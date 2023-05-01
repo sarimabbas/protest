@@ -7,7 +7,7 @@ const config: Config = {
   content: [
     "app/**/*.{ts,tsx}",
     "components/**/*.{ts,tsx}",
-    "./node_modules/@protest/ui/src/**/*.{js,ts,jsx,tsx,mdx,ts}",
+    "./node_modules/@protest/shared/src/**/*.{js,ts,jsx,tsx,mdx,ts}",
   ],
   theme: {
     container: {
