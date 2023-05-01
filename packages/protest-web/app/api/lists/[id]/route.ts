@@ -1,4 +1,4 @@
-import { IOutputItem, ZPOSTBody, ZPOSTResponse } from "@/../shared/src";
+import { IOutputItem, ZPOSTBody, ZPOSTResponse } from "@protest/shared";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
