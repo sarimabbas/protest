@@ -1,4 +1,4 @@
-const config = require("tailwind-config");
+const config = require("@protest/tailwind");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -10,5 +10,3 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
 };
-
-console.log(module.exports);

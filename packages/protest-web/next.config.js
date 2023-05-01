@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-  transpilePackages: ["tailwind-config", "@protest/ui"],
+  transpilePackages: ["@protest/tailwind", "@protest/ui"],
 };
 
 module.exports = nextConfig;
