@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const ZInputItem = z.object({
+  id: z.string(),
   content: z.string(),
 });
 
@@ -10,6 +11,7 @@ const ZPostBody = z.object({
 });
 
 const ZOutputItem = z.object({
+  id: z.string(),
   show: z.boolean(),
 });
 
@@ -24,9 +26,12 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(parsedBody.error, { status: 400 });
   }
 
-  const outputs = parsedBody.data.inputs.map((input) => ({
-    show: input.content.length > 0,
-  }));
+  const outputs: z.infer<typeof ZOutputItem>[] = parsedBody.data.inputs.map(
+    (input) => ({
+      id: input.id,
+      show: input.content.length > 0,
+    })
+  );
 
   const parsedResponse = ZPostResponse.safeParse({ outputs });
   if (parsedResponse.success === false) {
@@ -35,3 +40,5 @@ export const POST = async (request: NextRequest) => {
 
   return NextResponse.json(parsedResponse);
 };
+
+type Exx = Awaited<ReturnType<typeof POST>>;
