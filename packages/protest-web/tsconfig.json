@@ -1,5 +1,5 @@
 {
-  "extends": "@protest/config/src/tsconfig/nextjs.json",
+  "extends": "@protest/tsconfig/nextjs.json",
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
