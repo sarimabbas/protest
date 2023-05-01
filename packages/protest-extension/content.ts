@@ -1,5 +1,5 @@
 import { sendToBackground } from "@plasmohq/messaging";
-import { type IPOSTResponse } from "@protest/shared";
+import { type IPOSTBody, type IPOSTResponse } from "@protest/shared";
 import throttle from "lodash.throttle";
 import type { PlasmoCSConfig } from "plasmo";
 import type { IElement } from "~adapters/contract";
@@ -17,14 +17,15 @@ const shouldHide = throttle(async () => {
   const unfetchedElements = Object.values(elementMap).filter((e) => !e.fetched);
 
   // send to server
+  const body: IPOSTBody = {
+    data: unfetchedElements.map((e) => ({
+      id: e.id,
+      content: e.domNode.innerText,
+    })),
+  };
   const resp: IPOSTResponse = await sendToBackground({
     name: "content-check",
-    body: {
-      inputs: unfetchedElements.map((e) => ({
-        id: e.id,
-        text: e.domNode.innerText,
-      })),
-    },
+    body,
   });
 
   console.log({ resp });

@@ -17,10 +17,13 @@ export const POST = async (request: NextRequest) => {
   // this is the input data
   const { data } = zodParsedBody.data;
 
+  console.log({ data });
+
   // the algorithm
   const outputs: IOutputItem[] = data.map((input) => ({
     id: input.id,
-    show: input.content.length > 0,
+    // show half the time
+    show: Math.random() > 0.5,
   }));
 
   // send back to client
