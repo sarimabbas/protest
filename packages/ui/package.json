@@ -3,6 +3,13 @@
   "version": "0.0.0",
   "main": "./src/index.tsx",
   "types": "./src/index.tsx",
+  "exports": {
+    ".": {
+      "import": "./src/index.tsx",
+      "require": "./src/index.tsx"
+    },
+    "./styles.css": "./src/styles.css"
+  },
   "license": "MIT",
   "scripts": {
     "lint": "eslint \"**/*.ts*\""
