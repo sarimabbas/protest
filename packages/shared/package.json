@@ -15,16 +15,17 @@
     "lint": "eslint \"**/*.ts*\""
   },
   "devDependencies": {
+    "@protest/tsconfig": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "eslint": "^7.32.0",
-    "@protest/tsconfig": "workspace:*",
     "react": "^17.0.2",
     "typescript": "^4.5.2"
   },
   "dependencies": {
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
-    "tailwind-merge": "^1.12.0"
+    "tailwind-merge": "^1.12.0",
+    "zod": "^3.21.4"
   }
 }
