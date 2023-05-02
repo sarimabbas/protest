@@ -33,8 +33,6 @@ const createContent = async (request: NextRequest) => {
       list: {
         id: listId,
       },
-      // todo: wait for xata to fix relation filter in vector search before removing
-      redundantListId: listId,
     });
   } catch (e: unknown) {
     if (e instanceof Error) {

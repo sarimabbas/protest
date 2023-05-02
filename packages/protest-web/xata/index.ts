@@ -15,12 +15,6 @@ const tables = [
       { name: "isPositive", type: "bool", defaultValue: "false" },
       { name: "text", type: "text" },
       { name: "canonicalLink", type: "string" },
-      {
-        name: "redundantListId",
-        type: "string",
-        notNull: true,
-        defaultValue: "",
-      },
     ],
   },
   { name: "lists", columns: [{ name: "name", type: "string" }] },

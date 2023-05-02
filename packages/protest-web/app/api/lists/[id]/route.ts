@@ -44,7 +44,7 @@ export const POST = async (
     embeddings.map(async (em, i) => {
       const vecSearch = await xata.db.content.vectorSearch("embedding", em, {
         filter: {
-          redundantListId: params.id,
+          list: params.id,
         },
       });
       console.log({
