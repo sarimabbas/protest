@@ -1,4 +1,12 @@
+import { Embed } from "@/components/embed";
 import { getXataClient } from "@/xata";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  Textarea,
+} from "@protest/shared";
 import { CreateUI } from "./create";
 
 const ListPage = async ({
@@ -24,12 +32,30 @@ const ListPage = async ({
 
   const { id } = params;
   return (
-    <div>
-      <h1>{list?.name}</h1>
-      <h2>Add content</h2>
+    <div className="flex flex-col gap-8">
+      <h1 className="text-xl font-bold">{list?.name}</h1>
       <CreateUI listId={id} />
-      <br />
-      <pre>{JSON.stringify(content, null, 2)}</pre>
+      <div className="grid grid-cols-3 gap-4">
+        {content.map((c) => {
+          return (
+            <Card key={c.id}>
+              <CardHeader>
+                <CardDescription>{c.id}</CardDescription>
+                <CardContent className="p-0">
+                  {c.canonicalLink && <Embed url={c.canonicalLink} />}
+                  <Textarea
+                    disabled
+                    rows={5}
+                    className="w-full m-0 resize-none"
+                  >
+                    {c.text}
+                  </Textarea>
+                </CardContent>
+              </CardHeader>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 };

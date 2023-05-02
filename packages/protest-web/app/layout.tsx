@@ -1,6 +1,7 @@
 import { cn } from "@protest/shared";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { Navbar } from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +20,10 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          "flex min-h-screen flex-col p-4 md:p-24"
+          "flex min-h-screen flex-col px-4 md:px-10 md:py-8 gap-8 container mx-auto"
         )}
       >
+        <Navbar />
         {children}
       </body>
     </html>

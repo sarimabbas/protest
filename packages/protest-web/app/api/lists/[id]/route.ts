@@ -54,7 +54,7 @@ export const POST = async (
           ...v.getMetadata(),
         })),
       });
-      return (vecSearch?.[0].getMetadata().score ?? 0) < 1.8;
+      return (vecSearch?.[0].getMetadata().score ?? 0) < 1.76;
     })
   );
 
