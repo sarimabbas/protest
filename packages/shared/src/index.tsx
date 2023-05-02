@@ -4,3 +4,5 @@ export * from "./button";
 export * from "./card";
 export * from "./textarea";
 export * from "./dialog";
+export * from "./tabs";
+export * from "./input";
