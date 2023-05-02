@@ -24,7 +24,8 @@ const ListPage = async ({
     })
     .getFirst();
 
-  const content = await xata.db.content
+  const content = await xata.db.itemsOnLists
+    .select(["item.*"])
     .filter({
       "list.id": params.id,
     })
@@ -42,13 +43,13 @@ const ListPage = async ({
               <CardHeader>
                 <CardDescription>{c.id}</CardDescription>
                 <CardContent className="p-0">
-                  {c.canonicalLink && <Embed url={c.canonicalLink} />}
+                  {c.item?.url && <Embed url={c.item.url} />}
                   <Textarea
                     disabled
                     rows={5}
                     className="w-full m-0 resize-none"
                   >
-                    {c.text}
+                    {c.item?.text}
                   </Textarea>
                 </CardContent>
               </CardHeader>

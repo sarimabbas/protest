@@ -8,30 +8,53 @@ import type {
 
 const tables = [
   {
-    name: "content",
+    name: "items",
     columns: [
-      { name: "embedding", type: "vector", vector: { dimension: 1536 } },
-      { name: "list", type: "link", link: { table: "lists" } },
-      { name: "isPositive", type: "bool", defaultValue: "false" },
+      { name: "embeddingAda", type: "vector", vector: { dimension: 1536 } },
       { name: "text", type: "text" },
-      { name: "canonicalLink", type: "string" },
+      { name: "url", type: "string" },
     ],
   },
-  { name: "lists", columns: [{ name: "name", type: "string" }] },
+  {
+    name: "lists",
+    columns: [
+      { name: "name", type: "string" },
+      { name: "user", type: "link", link: { table: "users" } },
+    ],
+  },
+  {
+    name: "itemsOnLists",
+    columns: [
+      { name: "list", type: "link", link: { table: "lists" } },
+      { name: "item", type: "link", link: { table: "items" } },
+    ],
+  },
+  {
+    name: "users",
+    columns: [{ name: "clerkId", type: "string", unique: true }],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
 export type InferredTypes = SchemaInference<SchemaTables>;
 
-export type Content = InferredTypes["content"];
-export type ContentRecord = Content & XataRecord;
+export type Items = InferredTypes["items"];
+export type ItemsRecord = Items & XataRecord;
 
 export type Lists = InferredTypes["lists"];
 export type ListsRecord = Lists & XataRecord;
 
+export type ItemsOnLists = InferredTypes["itemsOnLists"];
+export type ItemsOnListsRecord = ItemsOnLists & XataRecord;
+
+export type Users = InferredTypes["users"];
+export type UsersRecord = Users & XataRecord;
+
 export type DatabaseSchema = {
-  content: ContentRecord;
+  items: ItemsRecord;
   lists: ListsRecord;
+  itemsOnLists: ItemsOnListsRecord;
+  users: UsersRecord;
 };
 
 const DatabaseClient = buildClient();

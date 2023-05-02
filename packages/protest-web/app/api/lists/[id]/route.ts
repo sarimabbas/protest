@@ -42,18 +42,22 @@ export const POST = async (
   const embeddings = embeddingsResponse.data.data.map((d) => d.embedding);
   const decisions = await Promise.all(
     embeddings.map(async (em, i) => {
-      const vecSearch = await xata.db.content.vectorSearch("embedding", em, {
-        filter: {
-          list: params.id,
-        },
-      });
-      console.log({
-        inputText: data[i].content.slice(0, 100),
-        vecSearch: vecSearch.map((v) => ({
-          content: v.text?.slice(0, 100),
-          ...v.getMetadata(),
-        })),
-      });
+      const vecSearch = await xata.db.itemsOnLists.vectorSearch(
+        "item.embeddingAda",
+        em,
+        {
+          filter: {
+            list: params.id,
+          },
+        }
+      );
+      // console.log({
+      //   inputText: data[i].content.slice(0, 100),
+      //   vecSearch: vecSearch.map((v) => ({
+      //     content: v.item.?.slice(0, 100),
+      //     ...v.getMetadata(),
+      //   })),
+      // });
       return (vecSearch?.[0].getMetadata().score ?? 0) < 1.76;
     })
   );

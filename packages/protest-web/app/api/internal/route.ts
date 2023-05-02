@@ -9,9 +9,11 @@ const createContent = async (request: NextRequest) => {
   const {
     listId,
     text,
+    url,
   }: {
     listId: string;
     text: string;
+    url: string;
   } = body;
 
   let vector: number[] = [];
@@ -27,9 +29,28 @@ const createContent = async (request: NextRequest) => {
   }
 
   try {
-    await xata.db.content.create({
-      text,
-      embedding: vector,
+    let itemId = "";
+
+    const existingItem = await xata.db.items
+      .filter({
+        url,
+      })
+      .getFirst();
+
+    if (existingItem) {
+      itemId = existingItem.id;
+    } else {
+      const item = await xata.db.items.create({
+        text,
+        embeddingAda: vector,
+      });
+      itemId = item.id;
+    }
+
+    await xata.db.itemsOnLists.create({
+      item: {
+        id: itemId,
+      },
       list: {
         id: listId,
       },
