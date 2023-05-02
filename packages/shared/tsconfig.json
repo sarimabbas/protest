@@ -1,5 +1,9 @@
 {
   "extends": "@protest/tsconfig/react-library.json",
   "include": ["src"],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    // https://github.com/microsoft/TypeScript/issues/47663#issuecomment-1519138189
+    "declaration": false
+  }
 }
