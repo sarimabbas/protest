@@ -1,5 +1,5 @@
-import { Button } from "@protest/shared";
 import { getXataClient } from "@/xata";
+import { CreateUI } from "./create";
 
 const ListPage = async ({
   params,
@@ -26,9 +26,10 @@ const ListPage = async ({
   return (
     <div>
       <h1>{list?.name}</h1>
-      <Button variant="outline">Button</Button>
+      <h2>Add content</h2>
+      <CreateUI listId={id} />
       <br />
-      <div>{JSON.stringify(content, null, 2)}</div>
+      <pre>{JSON.stringify(content, null, 2)}</pre>
     </div>
   );
 };

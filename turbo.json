@@ -3,6 +3,7 @@
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
+      "env": ["OPENAI_KEY"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {},

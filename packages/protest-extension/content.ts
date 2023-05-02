@@ -2,8 +2,8 @@ import { sendToBackground } from "@plasmohq/messaging";
 import { type IPOSTBody, type IPOSTResponse } from "@protest/shared";
 import throttle from "lodash.throttle";
 import type { PlasmoCSConfig } from "plasmo";
+import { getAdapterForDomain } from "~adapters";
 import type { IElement } from "~adapters/contract";
-import { TwitterAdapter } from "~adapters/twitter";
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"],
@@ -12,7 +12,13 @@ export const config: PlasmoCSConfig = {
 
 const elementMap: Record<string, IElement> = {};
 
+const adapter = getAdapterForDomain();
+
 const shouldHide = throttle(async () => {
+  if (!adapter) {
+    return;
+  }
+
   // get all unfetched elements
   const unfetchedElements = Object.values(elementMap).filter((e) => !e.fetched);
 
@@ -36,7 +42,7 @@ const shouldHide = throttle(async () => {
 
     // hide elements that are filtered out
     if (!e.show) {
-      TwitterAdapter.hide(elementMap[e.id]);
+      adapter.hide(elementMap[e.id]);
       elementMap[e.id].hidden = true;
       console.log("hiding element", e);
     }
@@ -53,8 +59,12 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 window.addEventListener("scroll", () => {
+  if (!adapter) {
+    return;
+  }
+
   console.log("on scroll");
-  TwitterAdapter.collect().forEach((e) => {
+  adapter.collect().forEach((e) => {
     if (e.id in elementMap) {
       return;
     }
