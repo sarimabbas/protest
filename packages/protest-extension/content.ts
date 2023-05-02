@@ -29,24 +29,30 @@ const shouldHide = throttle(async () => {
       content: e.domNode.innerText,
     })),
   };
-  const resp: IPOSTResponse = await sendToBackground({
-    name: "content-check",
-    body,
-  });
 
-  console.log({ resp });
-
-  resp.data.forEach((e) => {
-    // mark fetched elements as fetched
-    elementMap[e.id].fetched = true;
-
-    // hide elements that are filtered out
-    if (!e.show) {
-      adapter.hide(elementMap[e.id]);
-      elementMap[e.id].hidden = true;
-      console.log("hiding element", e);
+  try {
+    const resp: IPOSTResponse = await sendToBackground({
+      name: "content-check",
+      body,
+    });
+    if (resp.success) {
+      resp.data.forEach((e) => {
+        // mark fetched elements as fetched
+        elementMap[e.id].fetched = true;
+        // hide elements that are filtered out
+        if (!e.show) {
+          adapter.hide(elementMap[e.id]);
+          elementMap[e.id].hidden = true;
+          console.log("hiding element", e);
+        }
+      });
+    } else {
+      console.error(resp.error);
     }
-  });
+  } catch (e) {
+    console.error(e);
+    return;
+  }
 }, 1500);
 
 const observer = new IntersectionObserver((entries) => {
