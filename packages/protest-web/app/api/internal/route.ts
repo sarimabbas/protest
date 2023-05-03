@@ -1,12 +1,13 @@
 import { openAI } from "@/openai";
 import { getXataClient } from "@/xata";
 import { NextRequest, NextResponse } from "next/server";
+import mql from "@microlink/mql";
 
 const xata = getXataClient();
 
 const createContent = async (request: NextRequest) => {
   const body = await request.json();
-  const {
+  let {
     listId,
     text,
     url,
@@ -15,6 +16,11 @@ const createContent = async (request: NextRequest) => {
     text: string;
     url: string;
   } = body;
+
+  if (url) {
+    const meta = await mql(url);
+    text = meta.data.description ?? text;
+  }
 
   let vector: number[] = [];
   try {
@@ -43,6 +49,7 @@ const createContent = async (request: NextRequest) => {
       const item = await xata.db.items.create({
         text,
         embeddingAda: vector,
+        url,
       });
       itemId = item.id;
     }
