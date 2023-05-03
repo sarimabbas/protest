@@ -39,10 +39,12 @@ const ListPage = async ({
 
   const { id } = params;
   return (
-    <div className="flex flex-col gap-8">
-      <h1 className="text-xl font-bold">{list?.name}</h1>
-      <AddItemDialog listId={id} />
-      <div className="grid grid-cols-3 gap-4">
+    <div className="flex flex-col gap-8 md:px-8">
+      <div className="flex justify-between flex-wrap items-center">
+        <h1 className="text-xl font-bold">{list?.name}</h1>
+        <AddItemDialog listId={id} />
+      </div>
+      <div className="grid md:grid-cols-3 gap-4">
         {content.map((c) => {
           return (
             <Card key={c.id} className="h-fit">
@@ -56,6 +58,7 @@ const ListPage = async ({
                   className="w-full m-0 resize-none"
                   defaultValue={c.item?.text ?? ""}
                 />
+                {/* todo: fix responsive issues */}
                 {c.item?.url && <Embed url={c.item.url} />}
               </CardContent>
             </Card>
