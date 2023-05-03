@@ -136,6 +136,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.23)
+      lucide-react:
+        specifier: ^0.193.0
+        version: 0.193.0(react@18.2.0)
       next:
         specifier: 13.3.1
         version: 13.3.1(react-dom@18.2.0)(react@18.2.0)
@@ -6175,6 +6178,14 @@ packages:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 17.0.2
+    dev: false
+
+  /lucide-react@0.193.0(react@18.2.0):
+    resolution: {integrity: sha512-AwVnj3obl/xb4zI9LWiBsJ6QYOp1qLXYC/J/ets7+OQ3Mm5185wvu69fuWNB15UyR2oMt/I5lzhIprYligMBwA==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /magic-string@0.25.9:
