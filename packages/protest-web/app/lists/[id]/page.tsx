@@ -39,18 +39,17 @@ const ListPage = async ({
       <div className="grid grid-cols-3 gap-4">
         {content.map((c) => {
           return (
-            <Card key={c.id}>
+            <Card key={c.id} className="h-fit">
               <CardHeader>
                 <CardDescription>{c.id}</CardDescription>
                 <CardContent className="p-0">
-                  {c.item?.url && <Embed url={c.item.url} />}
                   <Textarea
                     disabled
                     rows={5}
                     className="w-full m-0 resize-none"
-                  >
-                    {c.item?.text}
-                  </Textarea>
+                    defaultValue={c.item?.text ?? ""}
+                  />
+                  {c.item?.url && <Embed url={c.item.url} />}
                 </CardContent>
               </CardHeader>
             </Card>
