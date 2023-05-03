@@ -9,6 +9,14 @@ import {
 } from "@protest/shared";
 import { AddItemDialog } from "@/components/add-item-dialog";
 
+const xata = getXataClient();
+
+const mutationDeleteItemOnList = async (itemOnListId: string) => {
+  return xata.db.itemsOnLists.delete({
+    id: itemOnListId,
+  });
+};
+
 const ListPage = async ({
   params,
 }: {
@@ -16,8 +24,6 @@ const ListPage = async ({
     id: string;
   };
 }) => {
-  const xata = getXataClient();
-
   const list = await xata.db.lists
     .filter({
       id: params.id,
@@ -40,18 +46,18 @@ const ListPage = async ({
         {content.map((c) => {
           return (
             <Card key={c.id} className="h-fit">
-              <CardHeader>
+              <CardHeader className="flex items-center">
                 <CardDescription>{c.id}</CardDescription>
-                <CardContent className="p-0">
-                  <Textarea
-                    disabled
-                    rows={5}
-                    className="w-full m-0 resize-none"
-                    defaultValue={c.item?.text ?? ""}
-                  />
-                  {c.item?.url && <Embed url={c.item.url} />}
-                </CardContent>
               </CardHeader>
+              <CardContent>
+                <Textarea
+                  disabled
+                  rows={5}
+                  className="w-full m-0 resize-none"
+                  defaultValue={c.item?.text ?? ""}
+                />
+                {c.item?.url && <Embed url={c.item.url} />}
+              </CardContent>
             </Card>
           );
         })}
