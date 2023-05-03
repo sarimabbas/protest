@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, Input, Textarea } from "@protest/shared";
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -9,31 +9,58 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  Input,
   Tabs,
+  TabsContent,
   TabsList,
   TabsTrigger,
-  TabsContent,
+  Textarea,
 } from "@protest/shared";
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface AddItemDialogProps {
+  listId: string;
   onAddCallback?: (type: "text" | "url", value: string) => void;
 }
+
+const addItemMutation = async ({
+  listId,
+  text,
+  url,
+}: {
+  listId: string;
+  text?: string;
+  url?: string;
+}) => {
+  return fetch(`/api/internal`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      listId,
+      text,
+      url,
+    }),
+  });
+};
 
 export function AddItemDialog(props: AddItemDialogProps) {
   const [activeTab, setActiveTab] = useState<"text" | "url">("text");
   const urlRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
-  const onAdd = () => {
-    if (props.onAddCallback !== undefined) {
-      props.onAddCallback(
-        activeTab,
-        activeTab === "text" ? textRef.current!.value : urlRef.current!.value
-      );
-    }
+  const onAdd = async () => {
+    await addItemMutation({
+      listId: props.listId,
+      text: textRef.current?.value,
+      url: urlRef.current?.value,
+    });
     setIsOpen(false);
+    router.refresh();
   };
 
   return (

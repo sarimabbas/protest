@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@microlink/mql": "^0.10.33",
     "@protest/eslint-config": "workspace:*",
     "@protest/shared": "workspace:*",
     "@protest/tailwind": "workspace:*",

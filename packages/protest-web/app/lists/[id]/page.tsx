@@ -7,7 +7,7 @@ import {
   CardHeader,
   Textarea,
 } from "@protest/shared";
-import { CreateUI } from "./create";
+import { AddItemDialog } from "@/components/add-item-dialog";
 
 const ListPage = async ({
   params,
@@ -35,7 +35,7 @@ const ListPage = async ({
   return (
     <div className="flex flex-col gap-8">
       <h1 className="text-xl font-bold">{list?.name}</h1>
-      <CreateUI listId={id} />
+      <AddItemDialog listId={id} />
       <div className="grid grid-cols-3 gap-4">
         {content.map((c) => {
           return (
