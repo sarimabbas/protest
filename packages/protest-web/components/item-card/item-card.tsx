@@ -7,7 +7,7 @@ import {
   CardHeader,
   Textarea,
 } from "@protest/shared";
-import { Embed } from "../embed";
+import { Embed } from "../embed/embed";
 
 interface ItemCardProps {
   id: string;
@@ -21,7 +21,7 @@ export const ItemCard = (props: ItemCardProps) => {
       <CardHeader className="flex items-center">
         <CardDescription>{props.id}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="gap-4 flex flex-col">
         <Textarea
           disabled
           rows={5}
