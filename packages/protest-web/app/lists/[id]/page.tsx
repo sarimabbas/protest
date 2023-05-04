@@ -1,13 +1,6 @@
-import { Embed } from "@/components/embed";
-import { getXataClient } from "@/xata";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  Textarea,
-} from "@protest/shared";
 import { AddItemDialog } from "@/components/add-item-dialog";
+import { ItemCard } from "@/components/item-card";
+import { getXataClient } from "@/xata";
 
 const xata = getXataClient();
 
@@ -47,21 +40,12 @@ const ListPage = async ({
       <div className="grid md:grid-cols-3 gap-4">
         {content.map((c) => {
           return (
-            <Card key={c.id} className="h-fit">
-              <CardHeader className="flex items-center">
-                <CardDescription>{c.id}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  disabled
-                  rows={5}
-                  className="w-full m-0 resize-none"
-                  defaultValue={c.item?.text ?? ""}
-                />
-                {/* todo: fix responsive issues */}
-                {c.item?.url && <Embed url={c.item.url} />}
-              </CardContent>
-            </Card>
+            <ItemCard
+              id={c.id}
+              key={c.id}
+              text={c.item?.text ?? ""}
+              url={c.item?.url ?? ""}
+            />
           );
         })}
       </div>
