@@ -1,6 +1,7 @@
 import { AddItemDialog } from "@/components/add-item-dialog";
 import { ItemCard } from "@/components/item-card";
 import { getXataClient } from "@/xata";
+import { CardboardProvider } from "@sarim.garden/cardboard";
 
 const xata = getXataClient();
 
@@ -37,18 +38,20 @@ const ListPage = async ({
         <h1 className="text-xl font-bold">{list?.name}</h1>
         <AddItemDialog listId={id} />
       </div>
-      <div className="grid md:grid-cols-3 gap-4">
-        {content.map((c) => {
-          return (
-            <ItemCard
-              id={c.id}
-              key={c.id}
-              text={c.item?.text ?? ""}
-              url={c.item?.url ?? ""}
-            />
-          );
-        })}
-      </div>
+      <CardboardProvider>
+        <div className="grid md:grid-cols-3 gap-4">
+          {content.map((c) => {
+            return (
+              <ItemCard
+                id={c.id}
+                key={c.id}
+                text={c.item?.text ?? ""}
+                url={c.item?.url ?? ""}
+              />
+            );
+          })}
+        </div>
+      </CardboardProvider>
     </div>
   );
 };

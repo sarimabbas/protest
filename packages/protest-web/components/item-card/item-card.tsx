@@ -7,7 +7,7 @@ import {
   CardHeader,
   Textarea,
 } from "@protest/shared";
-import { Embed } from "../embed/embed";
+import { Cardboard } from "@sarim.garden/cardboard";
 
 interface ItemCardProps {
   id: string;
@@ -28,8 +28,7 @@ export const ItemCard = (props: ItemCardProps) => {
           className="w-full m-0 resize-none"
           defaultValue={props.text ?? ""}
         />
-        {/* todo: fix responsive issues */}
-        {props?.url && <Embed url={props.url} />}
+        {props?.url && <Cardboard url={props.url} forceFit />}
       </CardContent>
     </Card>
   );
