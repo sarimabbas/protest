@@ -1,14 +1,14 @@
-import { z } from "zod";
-import { oas31 } from "openapi3-ts";
-import merge from "lodash.merge";
 import { generateSchema } from "@anatine/zod-openapi";
+import merge from "lodash.merge";
+import { oas31 } from "openapi3-ts";
+import { z } from "zod";
 import { commonReponses } from "./responses";
-import { httpMethodSupportsRequestBody } from "./utils";
+import { HTTPMethod, httpMethodSupportsRequestBody } from "./utils";
 
 interface ICreateRequestHandlerProps<
   TInput extends z.AnyZodObject,
   TOutput extends z.AnyZodObject,
-  TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  TMethod extends HTTPMethod,
   TPath extends string
 > {
   /**
@@ -58,11 +58,11 @@ interface ICreateRequestHandlerProps<
 export interface IClientTypes<
   TInput extends z.AnyZodObject,
   TOutput extends z.AnyZodObject,
-  TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  TMethod extends HTTPMethod,
   TPath extends string
 > {
   input: z.infer<TInput>;
-  output: z.infer<TOutput>;
+  output: TOutput;
   method: TMethod;
   path: TPath;
 }
@@ -70,7 +70,7 @@ export interface IClientTypes<
 interface ICreateRequestHandlerReturn<
   TInput extends z.AnyZodObject,
   TOutput extends z.AnyZodObject,
-  TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  TMethod extends HTTPMethod,
   TPath extends string
 > {
   /**
@@ -90,7 +90,7 @@ interface ICreateRequestHandlerReturn<
 export const createRequestHandler = <
   TInput extends z.AnyZodObject,
   TOutput extends z.AnyZodObject,
-  TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  TMethod extends HTTPMethod,
   TPath extends string
 >(
   props: ICreateRequestHandlerProps<TInput, TOutput, TMethod, TPath>
@@ -134,7 +134,9 @@ export const createRequestHandler = <
       return commonReponses[405].response();
     }
 
-    const unsafeData = httpMethodSupportsRequestBody[request.method]
+    const unsafeData = httpMethodSupportsRequestBody[
+      request.method as HTTPMethod
+    ]
       ? await request.json()
       : Object.fromEntries(new URL(request.url).searchParams.entries());
     const parsedData = await props.input.safeParseAsync(unsafeData);
@@ -159,9 +161,9 @@ export const createRequestHandler = <
 
   return {
     clientTypes: {
-      // implementation does not matter
+      // implementation does not matter, these could be empty objects too
       input: {},
-      output: {},
+      output: props.output,
       method: props.method,
       path: props.path,
     },

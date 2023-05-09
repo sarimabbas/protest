@@ -29,4 +29,5 @@ const resp = getTest<typeof clientTypes>({
   },
   method: "GET",
   path: "/test",
+  validator: clientTypes.output,
 });

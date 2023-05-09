@@ -1,5 +1,6 @@
+import { z } from "zod";
 import { IClientTypes } from "./server";
-import { httpMethodSupportsRequestBody } from "./utils";
+import { HTTPMethod, httpMethodSupportsRequestBody } from "./utils";
 
 interface IMakeFetcherProps {
   baseUrl: string;
@@ -7,8 +8,17 @@ interface IMakeFetcherProps {
 }
 
 export const makeFetcher = (outerProps: IMakeFetcherProps) => {
-  const fetcher = async <TConfig extends IClientTypes<any, any, any, string>>(
-    props: Pick<TConfig, "input" | "method" | "path">
+  const fetcher = async <
+    TConfig extends IClientTypes<
+      z.AnyZodObject,
+      z.AnyZodObject,
+      HTTPMethod,
+      string
+    >
+  >(
+    props: Pick<TConfig, "input" | "method" | "path"> & {
+      validator?: TConfig["output"];
+    }
   ): Promise<TConfig["output"]> => {
     const url = new URL(props.path, outerProps.baseUrl);
     const resp = await fetch(
@@ -28,6 +38,11 @@ export const makeFetcher = (outerProps: IMakeFetcherProps) => {
     );
 
     const output = await resp.json();
+
+    if (props.validator) {
+      props.validator.parse(output);
+    }
+
     return output;
   };
 
