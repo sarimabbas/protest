@@ -49,6 +49,28 @@ importers:
 
   configs/tsconfig: {}
 
+  packages/funky:
+    dependencies:
+      '@anatine/zod-openapi':
+        specifier: ^1.12.1
+        version: 1.12.1(openapi3-ts@4.1.2)(zod@3.21.4)
+      lodash.merge:
+        specifier: ^4.6.2
+        version: 4.6.2
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
+    devDependencies:
+      '@types/lodash.merge':
+        specifier: ^4.6.7
+        version: 4.6.7
+      openapi3-ts:
+        specifier: ^4.1.2
+        version: 4.1.2
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
   packages/protest-extension:
     dependencies:
       '@plasmohq/messaging':
@@ -118,6 +140,9 @@ importers:
       '@xata.io/client':
         specifier: ^0.23.5
         version: 0.23.5(typescript@5.0.4)
+      funky:
+        specifier: workspace:*
+        version: link:../funky
       lucide-react:
         specifier: ^0.214.0
         version: 0.214.0(react@18.2.0)
@@ -229,6 +254,17 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
+
+  /@anatine/zod-openapi@1.12.1(openapi3-ts@4.1.2)(zod@3.21.4):
+    resolution: {integrity: sha512-scMpuku9VkDG4NahlnTRQcxlNZP7RGFpjKTOYkteZl/P8SSNaTogyOB1DRak/efQhyJryUAno3wvMVY9WBNxGA==}
+    peerDependencies:
+      openapi3-ts: ^2.0.0 || ^3.0.0
+      zod: ^3.20.0
+    dependencies:
+      openapi3-ts: 4.1.2
+      ts-deepmerge: 4.0.0
+      zod: 3.21.4
+    dev: false
 
   /@babel/code-frame@7.21.4:
     resolution: {integrity: sha512-LYvhNKfwWSPpocw8GI7gpK2nq3HSDuEPC/uSYaALSJu9xjsalaaYFOq0Pwt5KmVqwEbZlDu81aLXwBOmD/Fv9g==}
@@ -898,7 +934,7 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
     dependencies:
       eslint: 8.39.0
-      eslint-visitor-keys: 3.4.0
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.40.0):
@@ -908,7 +944,7 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
     dependencies:
       eslint: 8.40.0
-      eslint-visitor-keys: 3.4.0
+      eslint-visitor-keys: 3.4.1
 
   /@eslint-community/regexpp@4.5.1:
     resolution: {integrity: sha512-Z5ba73P98O1KUYCCJTUeVpja9RcGoMdncZ6T49FCUl2lN38JtCJ+3WgIDBv0AuY4WChU5PmtJmOCTlN6FZTFKQ==}
@@ -3036,6 +3072,12 @@ packages:
       '@types/node': 20.1.0
     dev: false
 
+  /@types/lodash.merge@4.6.7:
+    resolution: {integrity: sha512-OwxUJ9E50gw3LnAefSHJPHaBLGEKmQBQ7CZe/xflHkyy/wH2zVyEIAKReHvVrrn7zKdF58p16We9kMfh7v0RRQ==}
+    dependencies:
+      '@types/lodash': 4.14.194
+    dev: true
+
   /@types/lodash.throttle@4.1.7:
     resolution: {integrity: sha512-znwGDpjCHQ4FpLLx19w4OXDqq8+OvREa05H89obtSyXyOFKL3dDjCslsmfBz0T2FU8dmf5Wx1QvogbINiGIu9g==}
     dependencies:
@@ -3063,13 +3105,13 @@ packages:
   /@types/react-dom@18.0.11:
     resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
     dependencies:
-      '@types/react': 18.0.32
+      '@types/react': 18.2.6
     dev: true
 
   /@types/react-dom@18.2.3:
     resolution: {integrity: sha512-hxXEXWxFJXbY0LMj/T69mznqOZJXNtQMqVxIiirVAZnnpeYiD4zt+lPsgcr/cfWg2VLsxZ1y26vigG03prYB+Q==}
     dependencies:
-      '@types/react': 18.2.2
+      '@types/react': 18.2.6
     dev: true
 
   /@types/react-dom@18.2.4:
@@ -4729,6 +4771,7 @@ packages:
   /eslint-visitor-keys@3.4.0:
     resolution: {integrity: sha512-HPpKPUBQcAsZOsHAFwTtIKcYlCje62XB7SEAcxjtmW6TD1WVpkS6i6/hOVtTZIl4zGj/mBqpFVGvaDneik+VoQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
 
   /eslint-visitor-keys@3.4.1:
     resolution: {integrity: sha512-pZnmmLwYzf+kWaM/Qgrvpen51upAktaaiI01nsJD/Yr3lMOdNtq0cxkrrg16w64VtisN6okbs7Q8AfGqj4c9fA==}
@@ -6829,6 +6872,11 @@ packages:
       - debug
     dev: false
 
+  /openapi3-ts@4.1.2:
+    resolution: {integrity: sha512-B7gOkwsYMZO7BZXwJzXCuVagym2xhqsrilVvV0dnq2Di4+iLUXKVX9gOK23ZqaAHZOwABXN0QTdW8QnkUTX6DA==}
+    dependencies:
+      yaml: 2.2.2
+
   /optionator@0.9.1:
     resolution: {integrity: sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw==}
     engines: {node: '>= 0.8.0'}
@@ -8192,6 +8240,11 @@ packages:
 
   /ts-algebra@1.2.0:
     resolution: {integrity: sha512-kMuJJd8B2N/swCvIvn1hIFcIOrLGbWl9m/J6O3kHx9VRaevh00nvgjPiEGaRee7DRaAczMYR2uwWvXU22VFltw==}
+    dev: false
+
+  /ts-deepmerge@4.0.0:
+    resolution: {integrity: sha512-IrjjAwfM/J6ajWv5wDRZBdpVaTmuONJN1vC85mXlWVPXKelouLFiqsjR7m0h245qY6zZEtcDtcOTc4Rozgg1TQ==}
+    engines: {node: '>=14'}
     dev: false
 
   /ts-interface-checker@0.1.13:

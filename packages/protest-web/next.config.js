@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
-  transpilePackages: ["@protest/tailwind", "@protest/shared"],
+  transpilePackages: ["@protest/tailwind", "@protest/shared", "funky"],
 };
 
 module.exports = nextConfig;
