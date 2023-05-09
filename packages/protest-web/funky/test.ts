@@ -1,5 +1,5 @@
 import { createRequestHandler } from "./server";
-import { fetcher } from "./client";
+import { makeFetcher } from "./client";
 import { z } from "zod";
 
 const { clientTypes, openAPISchema } = createRequestHandler({
@@ -12,15 +12,19 @@ const { clientTypes, openAPISchema } = createRequestHandler({
   }),
   method: "GET",
   path: "/test",
-  run: async ({ request, input, output }) => {
+  run: async ({ request, input, sendOutput }) => {
     const { id } = input;
-    return output({ id });
+    return sendOutput({ id });
   },
 });
 
-const resp = fetcher<typeof clientTypes>({
+const getTest = makeFetcher({
+  baseUrl: "http://localhost:3000",
+});
+
+const resp = getTest<typeof clientTypes>({
   input: {
-    id: "123",
+    id: "test",
     name: "test",
   },
   method: "GET",

@@ -33,7 +33,7 @@ interface ICreateRequestHandlerProps<
   run: ({
     request,
     input,
-    output,
+    sendOutput,
   }: {
     /**
      * the raw request, do whatever you want with it
@@ -47,7 +47,7 @@ interface ICreateRequestHandlerProps<
      * @param output - the output data
      * @returns a helper to send the output
      */
-    output: (output: z.infer<TOutput>) => Promise<Response>;
+    sendOutput: (output: z.infer<TOutput>) => Promise<Response>;
   }) => Promise<Response>;
   /**
    * patch the generated openAPI schema with your own
@@ -145,7 +145,7 @@ export const createRequestHandler = <
 
     const input = parsedData.data;
 
-    const output = async (output: z.infer<TOutput>) => {
+    const sendOutput = async (output: z.infer<TOutput>) => {
       return new Response(JSON.stringify(output), {
         status: 200,
         headers: {
@@ -154,7 +154,7 @@ export const createRequestHandler = <
       });
     };
 
-    return props.run({ request, input, output });
+    return props.run({ request, input, sendOutput });
   };
 
   return {
