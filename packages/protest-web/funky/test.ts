@@ -18,15 +18,10 @@ const { clientTypes, openAPISchema } = createRequestHandler({
   },
 });
 
-const resp = fetcher<
-  (typeof clientTypes)["input"],
-  (typeof clientTypes)["output"],
-  (typeof clientTypes)["method"],
-  (typeof clientTypes)["path"]
->({
+const resp = fetcher<typeof clientTypes>({
   input: {
     id: "123",
-    name: "test",
+    name: "welkfjlekw",
   },
   method: "GET",
   path: "/test",

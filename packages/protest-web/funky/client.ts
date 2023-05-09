@@ -1,5 +1,6 @@
-interface IFetcherProps<
-  TInput,
+interface IFetcherOptions<
+  TInput extends object,
+  // TOutput extends object,
   TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
   TPath extends string
 > {
@@ -8,24 +9,33 @@ interface IFetcherProps<
   path: TPath;
 }
 
+type IClientTypes = {
+  input: object;
+  output: object;
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  path: string;
+};
+
+type IClientOptions<T extends IClientTypes> = IFetcherOptions<
+  T["input"],
+  // T["output"],
+  T["method"],
+  T["path"]
+>;
+
 interface IFetcherReturn<TOutput> {
   output: TOutput;
 }
 
-export const fetcher = async <
-  TInput,
-  TOutput,
-  TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
-  TPath extends string
->(
-  props: IFetcherProps<TInput, TMethod, TPath>
-): Promise<IFetcherReturn<TOutput>> => {
-  const resp = await fetch(props.path, {
-    method: props.method,
+export const fetcher = async <T extends IClientTypes>(
+  options: IClientOptions<T>
+): Promise<IFetcherReturn<T["output"]>> => {
+  const resp = await fetch(options.path, {
+    method: options.method,
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(props.input),
+    body: JSON.stringify(options.input),
   });
 
   const output = await resp.json();
