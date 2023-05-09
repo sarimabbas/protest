@@ -37,12 +37,16 @@ export const makeFetcher = (outerProps: IMakeFetcherProps) => {
       validator?: TConfig["output"];
     }
   ): Promise<TConfig["output"]> => {
-    // substitute path params from the input
+    // substitute any path params using the input
     const pathSubstitutor = compile(props.path);
     const substitutedPath = pathSubstitutor(props.input);
 
+    // create a ful url to the endpoint
     const url = new URL(substitutedPath, outerProps.baseUrl);
+
     const resp = await fetch(
+      // if the method supports a request body, send as JSON
+      // otherwise, send as query params
       httpMethodSupportsRequestBody[props.method]
         ? url
         : new URL(url.toString() + "?" + new URLSearchParams(props.input)),
