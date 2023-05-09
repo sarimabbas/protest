@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { IClientTypes } from "./server";
+import type { IClientTypes } from "./server";
 import { HTTPMethod, httpMethodSupportsRequestBody } from "./utils";
 import { compile } from "path-to-regexp";
 
