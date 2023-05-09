@@ -44,7 +44,9 @@ export const makeFetcher = (outerProps: IMakeFetcherProps) => {
       {
         method: props.method,
         headers: {
-          "Content-Type": "application/json",
+          ...(httpMethodSupportsRequestBody[props.method]
+            ? { "Content-Type": "application/json" }
+            : {}),
           ...(outerProps.headers ? Object.fromEntries(outerProps.headers) : {}),
         },
         body: httpMethodSupportsRequestBody[props.method]
