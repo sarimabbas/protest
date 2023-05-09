@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { IClientTypes } from "./server";
 import { HTTPMethod, httpMethodSupportsRequestBody } from "./utils";
+import { compile } from "path-to-regexp";
 
 export interface IMakeFetcherProps {
   /**
@@ -36,7 +37,11 @@ export const makeFetcher = (outerProps: IMakeFetcherProps) => {
       validator?: TConfig["output"];
     }
   ): Promise<TConfig["output"]> => {
-    const url = new URL(props.path, outerProps.baseUrl);
+    // substitute path params from the input
+    const pathSubstitutor = compile(props.path);
+    const substitutedPath = pathSubstitutor(props.input);
+
+    const url = new URL(substitutedPath, outerProps.baseUrl);
     const resp = await fetch(
       httpMethodSupportsRequestBody[props.method]
         ? url
