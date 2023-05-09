@@ -142,6 +142,8 @@ export const createRequestHandler = <
   };
 
   const handler = async (request: Request) => {
+    const clonedRequest = request.clone();
+
     if (request.method !== props.method) {
       return commonReponses[405].response();
     }
@@ -168,7 +170,7 @@ export const createRequestHandler = <
       });
     };
 
-    return props.run({ request, input, sendOutput });
+    return props.run({ request: clonedRequest, input, sendOutput });
   };
 
   return {
