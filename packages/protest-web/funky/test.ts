@@ -4,6 +4,7 @@ import { z } from "zod";
 const { exports, openAPISchema } = createRequestHandler({
   input: z.object({
     id: z.string(),
+    name: z.string(),
   }),
   output: z.object({
     id: z.string(),

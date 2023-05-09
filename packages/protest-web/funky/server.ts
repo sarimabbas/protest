@@ -113,12 +113,13 @@ export const createRequestHandler = <
         },
       },
       405: commonReponses[405].openAPISchema,
+      400: commonReponses[400].openAPISchema,
     },
   };
 
   const handler = async (request: Request) => {
     if (request.method !== props.method) {
-      return commonReponses[405].response;
+      return commonReponses[405].response();
     }
 
     const unsafeData = httpMethodSupportsRequestBody[request.method]
@@ -127,15 +128,7 @@ export const createRequestHandler = <
     const parsedData = await props.input.safeParseAsync(unsafeData);
 
     if (!parsedData.success) {
-      return new Response(
-        JSON.stringify({
-          error: "Invalid request payload",
-          details: parsedData.error,
-        }),
-        {
-          status: 400,
-        }
-      );
+      return commonReponses[400].response(parsedData.error);
     }
 
     const input = parsedData.data;
