@@ -29,5 +29,7 @@ const resp = getTest<typeof clientTypes>({
   },
   method: "GET",
   path: "/test",
-  validator: clientTypes.output,
+  validator: z.object({
+    id: z.string(),
+  }),
 });

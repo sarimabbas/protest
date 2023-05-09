@@ -61,9 +61,21 @@ export interface IClientTypes<
   TMethod extends HTTPMethod,
   TPath extends string
 > {
+  /**
+   * the typescript types for the input
+   */
   input: z.infer<TInput>;
+  /**
+   * the zod schema for the output
+   */
   output: TOutput;
+  /**
+   * the HTTP method
+   */
   method: TMethod;
+  /**
+   * the path the route is available on
+   */
   path: TPath;
 }
 
@@ -161,9 +173,8 @@ export const createRequestHandler = <
 
   return {
     clientTypes: {
-      // implementation does not matter, these could be empty objects too
-      input: {},
-      output: props.output,
+      input: {}, // implementation does not matter, we just need the types
+      output: props.output, // echo the zod schema
       method: props.method,
       path: props.path,
     },
