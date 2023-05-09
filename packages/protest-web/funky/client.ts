@@ -2,12 +2,28 @@ import { z } from "zod";
 import { IClientTypes } from "./server";
 import { HTTPMethod, httpMethodSupportsRequestBody } from "./utils";
 
-interface IMakeFetcherProps {
+export interface IMakeFetcherProps {
+  /**
+   * the base URL of the server
+   */
   baseUrl: string;
+  /**
+   * headers to send with every request
+   */
   headers?: Headers;
 }
 
+/**
+ *
+ * @param outerProps - the props to configure the fetcher
+ * @returns a function that can be used to make requests to the server
+ */
 export const makeFetcher = (outerProps: IMakeFetcherProps) => {
+  /**
+   *
+   * @param props - the props to make the request
+   * @returns the response from the server
+   */
   const fetcher = async <
     TConfig extends IClientTypes<
       z.AnyZodObject,
