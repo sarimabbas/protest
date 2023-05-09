@@ -46,4 +46,10 @@ export const commonReponses = {
         status: 400,
       }),
   },
-};
+} satisfies Record<
+  string,
+  {
+    openAPISchema: oas31.ResponseObject;
+    response: (props: any) => Response;
+  }
+>;
