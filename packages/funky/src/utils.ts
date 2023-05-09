@@ -54,9 +54,12 @@ export type PathParamNames<
  * @returns OpenAPI schema
  */
 export const makeOpenAPISchema = (
-  schema: oas31.PathItemObject
-): oas31.PathItemObject => {
-  return {
-    ...schema,
-  };
+  pathObjects: oas31.PathObject[],
+  initial?: oas31.OpenAPIObject
+): oas31.OpenAPIObject => {
+  const builder = oas31.OpenApiBuilder.create(initial);
+  Object.entries(pathObjects).forEach(([path, pathItemObject]) => {
+    builder.addPath(path, pathItemObject);
+  });
+  return builder.getSpec();
 };

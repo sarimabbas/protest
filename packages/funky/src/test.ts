@@ -1,6 +1,7 @@
 import { makeRequestHandler } from "./server";
 import { makeFetcher } from "./client";
 import { z } from "zod";
+import { makeOpenAPISchema } from "./utils";
 
 const { clientTypes, openAPISchema } = makeRequestHandler({
   input: z.object({
@@ -32,3 +33,5 @@ const resp = getTest<typeof clientTypes>({
     id: z.string(),
   }),
 });
+
+const finalSchema = makeOpenAPISchema([openAPISchema]);
