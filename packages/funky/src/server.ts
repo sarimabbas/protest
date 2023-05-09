@@ -8,8 +8,8 @@ import {
   HumanReadable,
   PathParamNames,
   httpMethodSupportsRequestBody,
-  makePathRegex,
-  runPathRegex,
+  getKeysFromPathPattern,
+  getParamsFromPath,
 } from "./utils";
 
 export interface IMakeRequestHandlerProps<
@@ -119,8 +119,6 @@ export const makeRequestHandler = <
 >(
   props: IMakeRequestHandlerProps<TInput, TOutput, TMethod, TPath>
 ): IMakeRequestHandlerReturn<TInput, TOutput, TMethod, TPath> => {
-  const pathRegex = makePathRegex(props.path);
-
   const openAPIParameters: (oas31.ParameterObject | oas31.ReferenceObject)[] = [
     // query parameters
     ...(!httpMethodSupportsRequestBody[props.method]
@@ -133,7 +131,7 @@ export const makeRequestHandler = <
         }))
       : []),
     // path parameters
-    ...pathRegex.keys.map((key) => ({
+    ...getKeysFromPathPattern(props.path).map((key) => ({
       name: String(key.name),
       in: "path" as oas31.ParameterLocation,
       schema: {
@@ -173,13 +171,9 @@ export const makeRequestHandler = <
     if (request.method !== props.method) {
       return commonReponses[405].response();
     }
-    console.log({
-      parsedPath: runPathRegex(request.url, pathRegex.regexp),
-      path: request.url,
-    });
 
     const unsafeData = {
-      ...runPathRegex(request.url, pathRegex.regexp),
+      ...getParamsFromPath(props.path, new URL(request.url).pathname),
       ...(httpMethodSupportsRequestBody[request.method as HTTPMethod]
         ? await request.json()
         : Object.fromEntries(new URL(request.url).searchParams.entries())),

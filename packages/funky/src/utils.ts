@@ -1,4 +1,4 @@
-import { Key, Path, pathToRegexp } from "path-to-regexp";
+import { Key, Path, pathToRegexp, match } from "path-to-regexp";
 import { oas31 } from "openapi3-ts";
 
 export type HumanReadable<T> = {
@@ -15,29 +15,22 @@ export const httpMethodSupportsRequestBody: Record<HTTPMethod, boolean> = {
   DELETE: false,
 };
 
-export const makePathRegex = (
-  path: Path
-): {
-  regexp: RegExp;
-  keys: Key[];
-} => {
+export const getKeysFromPathPattern = (pattern: Path): Key[] => {
   const keys: Key[] = [];
-  const regexp = pathToRegexp(path, keys);
-  return {
-    regexp,
-    keys,
-  };
+  pathToRegexp(pattern, keys);
+  return keys;
 };
 
-export const runPathRegex = (path: string, regexp: RegExp) => {
-  const match = regexp.exec(path);
-  const params: Record<string, string> = {};
-  if (match) {
-    match.forEach((value, index) => {
-      params[index.toString()] = value;
-    });
+export const getParamsFromPath = (
+  pattern: string,
+  input: string
+): Record<string, any> => {
+  const matcher = match(pattern, { decode: decodeURIComponent });
+  const result = matcher(input);
+  if (!result) {
+    return {};
   }
-  return params;
+  return result.params;
 };
 
 /**
