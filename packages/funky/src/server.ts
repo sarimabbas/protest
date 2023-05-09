@@ -175,7 +175,7 @@ export const makeRequestHandler = <
     }
 
     const unsafeData = {
-      ...runPathRegex(props.path, pathRegex.regexp),
+      ...runPathRegex(request.url, pathRegex.regexp),
       ...(httpMethodSupportsRequestBody[request.method as HTTPMethod]
         ? await request.json()
         : Object.fromEntries(new URL(request.url).searchParams.entries())),
