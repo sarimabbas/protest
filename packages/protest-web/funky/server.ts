@@ -2,6 +2,7 @@ import { z } from "zod";
 import { oas31 } from "openapi3-ts";
 import merge from "lodash.merge";
 import { generateSchema } from "@anatine/zod-openapi";
+import { commonReponses } from "./responses";
 
 const httpMethodSupportsRequestBody: Record<string, boolean> = {
   GET: false,
@@ -111,15 +112,15 @@ export const createRequestHandler = <
           },
         },
       },
+      405: commonReponses[405].openAPISchema,
     },
   };
 
   const handler = async (request: Request) => {
     if (request.method !== props.method) {
-      return new Response("Method not allowed", { status: 405 });
+      return commonReponses[405].response;
     }
 
-    const { searchParams } = new URL(request.url);
     const unsafeData = httpMethodSupportsRequestBody[request.method]
       ? await request.json()
       : Object.fromEntries(new URL(request.url).searchParams.entries());
@@ -148,7 +149,7 @@ export const createRequestHandler = <
       });
     };
 
-    return props.run(request, input, output);
+    return props.run({ request, input, output });
   };
 
   return {
