@@ -1,3 +1,5 @@
+import { Key, Path, pathToRegexp } from "path-to-regexp";
+
 export type HumanReadable<T> = {
   [K in keyof T]: T[K];
 } & {};
@@ -11,3 +13,43 @@ export const httpMethodSupportsRequestBody: Record<HTTPMethod, boolean> = {
   PATCH: true,
   DELETE: false,
 };
+
+export const makePathRegex = (
+  path: Path
+): {
+  regexp: RegExp;
+  keys: Key[];
+} => {
+  const keys: Key[] = [];
+  const regexp = pathToRegexp(path, keys);
+  return {
+    regexp,
+    keys,
+  };
+};
+
+export const runPathRegex = (path: string, regexp: RegExp) => {
+  const match = regexp.exec(path);
+  const params: Record<string, string> = {};
+  if (match) {
+    match.forEach((value, index) => {
+      params[index.toString()] = value;
+    });
+  }
+  return params;
+};
+
+/**
+ * get all parameters from an API path
+ * thanks to Zodios for this snippet
+ * @param Path - API path
+ * @details - this is using tail recursion type optimization from typescript 4.5
+ */
+export type PathParamNames<
+  Path,
+  Acc = never
+> = Path extends `${string}:${infer Name}/${infer R}`
+  ? PathParamNames<R, Name | Acc>
+  : Path extends `${string}:${infer Name}`
+  ? Name | Acc
+  : Acc;

@@ -11,7 +11,7 @@ const { clientTypes, openAPISchema } = createRequestHandler({
     id: z.string(),
   }),
   method: "GET",
-  path: "/test",
+  path: "/test/:id",
   run: async ({ request, input, sendOutput }) => {
     const { id } = input;
     return sendOutput({ id });
@@ -24,11 +24,10 @@ const getTest = makeFetcher({
 
 const resp = getTest<typeof clientTypes>({
   input: {
-    id: "test",
     name: "test",
   },
   method: "GET",
-  path: "/test",
+  path: "/test/:id",
   validator: z.object({
     id: z.string(),
   }),

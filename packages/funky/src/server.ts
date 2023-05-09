@@ -3,7 +3,14 @@ import merge from "lodash.merge";
 import { oas31 } from "openapi3-ts";
 import { z } from "zod";
 import { commonReponses } from "./responses";
-import { HTTPMethod, httpMethodSupportsRequestBody } from "./utils";
+import {
+  HTTPMethod,
+  HumanReadable,
+  PathParamNames,
+  httpMethodSupportsRequestBody,
+  makePathRegex,
+  runPathRegex,
+} from "./utils";
 
 interface ICreateRequestHandlerProps<
   TInput extends z.AnyZodObject,
@@ -67,8 +74,9 @@ export interface IClientTypes<
 > {
   /**
    * the typescript types for the input
+   * exclude the path parameters that are automatically added
    */
-  input: z.infer<TInput>;
+  input: HumanReadable<Omit<z.infer<TInput>, PathParamNames<TPath>>>;
   /**
    * the zod schema for the output
    */
@@ -111,17 +119,31 @@ export const createRequestHandler = <
 >(
   props: ICreateRequestHandlerProps<TInput, TOutput, TMethod, TPath>
 ): ICreateRequestHandlerReturn<TInput, TOutput, TMethod, TPath> => {
-  const openAPISchema: oas31.OperationObject = {
-    parameters: httpMethodSupportsRequestBody[props.method]
-      ? // todo: add support for path parameters
-        Object.keys(props.input.shape).map((key) => ({
+  const pathRegex = makePathRegex(props.path);
+
+  const openAPIParameters: (oas31.ParameterObject | oas31.ReferenceObject)[] = [
+    // query parameters
+    ...(!httpMethodSupportsRequestBody[props.method]
+      ? Object.keys(props.input.shape).map((key) => ({
           name: key,
-          in: "query",
+          in: "query" as oas31.ParameterLocation,
           schema: {
-            type: "string",
+            type: "string" as oas31.SchemaObjectType,
           },
         }))
-      : [],
+      : []),
+    // path parameters
+    ...pathRegex.keys.map((key) => ({
+      name: String(key.name),
+      in: "path" as oas31.ParameterLocation,
+      schema: {
+        type: "string" as oas31.SchemaObjectType,
+      },
+    })),
+  ];
+
+  const openAPISchema: oas31.OperationObject = {
+    parameters: openAPIParameters,
     requestBody: httpMethodSupportsRequestBody[props.method]
       ? undefined
       : {
@@ -152,11 +174,13 @@ export const createRequestHandler = <
       return commonReponses[405].response();
     }
 
-    const unsafeData = httpMethodSupportsRequestBody[
-      request.method as HTTPMethod
-    ]
-      ? await request.json()
-      : Object.fromEntries(new URL(request.url).searchParams.entries());
+    const unsafeData = {
+      ...runPathRegex(props.path, pathRegex.regexp),
+      ...(httpMethodSupportsRequestBody[request.method as HTTPMethod]
+        ? await request.json()
+        : Object.fromEntries(new URL(request.url).searchParams.entries())),
+    };
+
     const parsedData = await props.input.safeParseAsync(unsafeData);
 
     if (!parsedData.success) {
@@ -188,7 +212,7 @@ export const createRequestHandler = <
 
   return {
     clientTypes: {
-      input: {}, // implementation does not matter, we just need the types
+      input: {} as any, // implementation does not matter, we just need the types
       output: props.output, // echo the zod schema
       method: props.method,
       path: props.path,
