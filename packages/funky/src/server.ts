@@ -48,7 +48,10 @@ interface ICreateRequestHandlerProps<
      * @param output - the output data
      * @returns a helper to send the output
      */
-    sendOutput: (output: z.infer<TOutput>) => Promise<Response>;
+    sendOutput: (
+      output: z.infer<TOutput>,
+      options?: Partial<ResponseInit>
+    ) => Promise<Response>;
   }) => Promise<Response>;
   /**
    * patch the generated openAPI schema with your own
@@ -162,13 +165,22 @@ export const createRequestHandler = <
 
     const input = parsedData.data;
 
-    const sendOutput = async (output: z.infer<TOutput>) => {
-      return new Response(JSON.stringify(output), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const sendOutput = async (
+      output: z.infer<TOutput>,
+      options?: Partial<ResponseInit>
+    ) => {
+      return new Response(
+        JSON.stringify(output),
+        merge(
+          {
+            status: 200,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+          options
+        )
+      );
     };
 
     return props.run({ request: clonedRequest, input, sendOutput });
