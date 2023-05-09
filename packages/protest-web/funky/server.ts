@@ -28,7 +28,8 @@ interface ICreateRequestHandlerProps<
    */
   path: TPath;
   /**
-   * @returns a callback inside which you can run your logic
+   * a callback inside which you can run your logic
+   * @returns a response to send back to the client
    */
   run: ({
     request,
