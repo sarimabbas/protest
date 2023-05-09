@@ -3,14 +3,7 @@ import { oas31 } from "openapi3-ts";
 import merge from "lodash.merge";
 import { generateSchema } from "@anatine/zod-openapi";
 import { commonReponses } from "./responses";
-
-const httpMethodSupportsRequestBody: Record<string, boolean> = {
-  GET: false,
-  POST: true,
-  PUT: true,
-  PATCH: true,
-  DELETE: false,
-};
+import { httpMethodSupportsRequestBody } from "./utils";
 
 interface ICreateRequestHandlerProps<
   TInput extends z.AnyZodObject,
