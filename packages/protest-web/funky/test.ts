@@ -2,11 +2,15 @@ import { createRequestHandler } from "./server";
 import { z } from "zod";
 
 const { exports, openAPISchema } = createRequestHandler({
-  request: z.object({
+  input: z.object({
     id: z.string(),
   }),
-  response: z.object({
+  output: z.object({
     id: z.string(),
   }),
   method: "GET",
+  run: async ({ request, input, output }) => {
+    const { id } = input;
+    return output({ id });
+  },
 });
