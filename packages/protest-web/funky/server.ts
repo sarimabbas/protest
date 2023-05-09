@@ -1,24 +1,35 @@
 import { z } from "zod";
 
-interface ICreateRequestHandlerProps<T, R> {
-  request: z.ZodType<T>;
-  response: z.ZodType<R>;
+interface ICreateRequestHandlerProps<
+  TRequest extends z.ZodTypeAny,
+  TResponse extends z.ZodTypeAny
+> {
+  request: TRequest;
+  response: TResponse;
 }
 
-interface ICreateRequestHandlerReturn<T, R> {
+interface ICreateRequestHandlerReturn<
+  TRequest extends z.ZodTypeAny,
+  TResponse extends z.ZodTypeAny
+> {
   exports: {
-    request: T;
-    response: R;
+    request: z.infer<TRequest>;
+    response: z.infer<TResponse>;
   };
 }
 
-export const createRequestHandler = <T, R>(
-  props: ICreateRequestHandlerProps<T, R>
-): ICreateRequestHandlerReturn<T, R> => {
+export const createRequestHandler = <
+  TRequest extends z.ZodTypeAny,
+  TResponse extends z.ZodTypeAny
+>(
+  props: ICreateRequestHandlerProps<TRequest, TResponse>
+): ICreateRequestHandlerReturn<TRequest, TResponse> => {
   return {
+    // implementation does not matter
+    // used to export types to the client
     exports: {
-      request: {} as T,
-      response: {} as R,
+      request: {},
+      response: {},
     },
   };
 };
