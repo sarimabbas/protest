@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { oas31 } from "openapi3-ts";
 import merge from "lodash.merge";
+import { generateSchema } from "@anatine/zod-openapi";
 
 type HumanReadable<T> = {
   [K in keyof T]: T[K];
@@ -45,7 +46,8 @@ export const createRequestHandler = <
 ): ICreateRequestHandlerReturn<TRequest, TResponse> => {
   const openAPISchema: oas31.OperationObject = {
     parameters: httpMethodSupportsRequestBody[props.method]
-      ? Object.keys(props.request.shape).map((key) => ({
+      ? // todo: add support for path parameters
+        Object.keys(props.request.shape).map((key) => ({
           name: key,
           in: "query",
           schema: {
@@ -58,10 +60,7 @@ export const createRequestHandler = <
       : {
           content: {
             "application/json": {
-              schema: {
-                type: "object",
-                properties: props.request.shape,
-              },
+              schema: generateSchema(props.request),
             },
           },
         },
@@ -70,10 +69,7 @@ export const createRequestHandler = <
         description: "Success",
         content: {
           "application/json": {
-            schema: {
-              type: "object",
-              properties: props.response.shape,
-            },
+            schema: generateSchema(props.response),
           },
         },
       },
@@ -87,6 +83,6 @@ export const createRequestHandler = <
       request: {},
       response: {},
     },
-    openAPISchema,
+    openAPISchema: merge(openAPISchema, props.openAPISchema),
   };
 };
