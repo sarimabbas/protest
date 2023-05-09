@@ -63,7 +63,7 @@ export interface IMakeRequestHandlerProps<
   /**
    * patch the generated openAPI schema with your own
    */
-  openAPISchema?: Partial<oas31.OperationObject>;
+  openAPISchema?: Partial<oas31.PathItemObject>;
 }
 
 export interface IClientTypes<
@@ -104,7 +104,7 @@ export interface IMakeRequestHandlerReturn<
   /**
    * OpenAPI schema for this route
    */
-  openAPISchema: oas31.OperationObject;
+  openAPISchema: oas31.PathItemObject;
   /**
    * @returns WinterCG compatible handler that you can use in your routes
    */
@@ -140,28 +140,30 @@ export const makeRequestHandler = <
     })),
   ];
 
-  const openAPISchema: oas31.OperationObject = {
-    parameters: openAPIParameters,
-    requestBody: httpMethodSupportsRequestBody[props.method]
-      ? undefined
-      : {
+  const openAPISchema: oas31.PathItemObject = {
+    [props.method.toLowerCase()]: {
+      parameters: openAPIParameters,
+      requestBody: httpMethodSupportsRequestBody[props.method]
+        ? undefined
+        : {
+            content: {
+              "application/json": {
+                schema: generateSchema(props.input),
+              },
+            },
+          },
+      responses: {
+        200: {
+          description: "Success",
           content: {
             "application/json": {
-              schema: generateSchema(props.input),
+              schema: generateSchema(props.output),
             },
           },
         },
-    responses: {
-      200: {
-        description: "Success",
-        content: {
-          "application/json": {
-            schema: generateSchema(props.output),
-          },
-        },
+        405: commonReponses[405].openAPISchema,
+        400: commonReponses[400].openAPISchema,
       },
-      405: commonReponses[405].openAPISchema,
-      400: commonReponses[400].openAPISchema,
     },
   };
 
