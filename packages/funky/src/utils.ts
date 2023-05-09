@@ -1,4 +1,5 @@
 import { Key, Path, pathToRegexp } from "path-to-regexp";
+import { oas31 } from "openapi3-ts";
 
 export type HumanReadable<T> = {
   [K in keyof T]: T[K];
@@ -53,3 +54,16 @@ export type PathParamNames<
   : Path extends `${string}:${infer Name}`
   ? Name | Acc
   : Acc;
+
+/**
+ * Utility function to make an OpenAPI schema so users don't have to install openapi3-ts
+ * @param schema - OpenAPI schema overrides
+ * @returns OpenAPI schema
+ */
+export const makeOpenAPISchema = (
+  schema: oas31.OpenAPIObject
+): oas31.OpenAPIObject => {
+  return {
+    ...schema,
+  };
+};

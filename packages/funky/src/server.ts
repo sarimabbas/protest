@@ -12,7 +12,7 @@ import {
   runPathRegex,
 } from "./utils";
 
-interface ICreateRequestHandlerProps<
+export interface IMakeRequestHandlerProps<
   TInput extends z.AnyZodObject,
   TOutput extends z.AnyZodObject,
   TMethod extends HTTPMethod,
@@ -91,7 +91,7 @@ export interface IClientTypes<
   path: TPath;
 }
 
-interface ICreateRequestHandlerReturn<
+export interface IMakeRequestHandlerReturn<
   TInput extends z.AnyZodObject,
   TOutput extends z.AnyZodObject,
   TMethod extends HTTPMethod,
@@ -111,14 +111,14 @@ interface ICreateRequestHandlerReturn<
   handler: (request: Request) => Promise<Response>;
 }
 
-export const createRequestHandler = <
+export const makeRequestHandler = <
   TInput extends z.AnyZodObject,
   TOutput extends z.AnyZodObject,
   TMethod extends HTTPMethod,
   TPath extends string
 >(
-  props: ICreateRequestHandlerProps<TInput, TOutput, TMethod, TPath>
-): ICreateRequestHandlerReturn<TInput, TOutput, TMethod, TPath> => {
+  props: IMakeRequestHandlerProps<TInput, TOutput, TMethod, TPath>
+): IMakeRequestHandlerReturn<TInput, TOutput, TMethod, TPath> => {
   const pathRegex = makePathRegex(props.path);
 
   const openAPIParameters: (oas31.ParameterObject | oas31.ReferenceObject)[] = [

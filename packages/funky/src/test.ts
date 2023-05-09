@@ -1,8 +1,8 @@
-import { createRequestHandler } from "./server";
+import { makeRequestHandler } from "./server";
 import { makeFetcher } from "./client";
 import { z } from "zod";
 
-const { clientTypes, openAPISchema } = createRequestHandler({
+const { clientTypes, openAPISchema } = makeRequestHandler({
   input: z.object({
     id: z.string(),
     name: z.string(),
