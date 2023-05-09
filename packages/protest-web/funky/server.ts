@@ -14,7 +14,9 @@ const httpMethodSupportsRequestBody: Record<string, boolean> = {
 
 interface ICreateRequestHandlerProps<
   TInput extends z.AnyZodObject,
-  TOutput extends z.AnyZodObject
+  TOutput extends z.AnyZodObject,
+  TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  TPath extends string
 > {
   /**
    * describe the shape of the input
@@ -27,7 +29,11 @@ interface ICreateRequestHandlerProps<
   /**
    * specify the HTTP method
    */
-  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  method: TMethod;
+  /**
+   * specify the path
+   */
+  path: TPath;
   /**
    * @returns a callback inside which you can run your logic
    */
@@ -56,17 +62,28 @@ interface ICreateRequestHandlerProps<
   openAPISchema?: Partial<oas31.OperationObject>;
 }
 
+export interface IClientTypes<
+  TInput extends z.AnyZodObject,
+  TOutput extends z.AnyZodObject,
+  TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  TPath extends string
+> {
+  input: z.infer<TInput>;
+  output: z.infer<TOutput>;
+  method: TMethod;
+  path: TPath;
+}
+
 interface ICreateRequestHandlerReturn<
   TInput extends z.AnyZodObject,
-  TOutput extends z.AnyZodObject
+  TOutput extends z.AnyZodObject,
+  TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  TPath extends string
 > {
   /**
    * generated typescript types
    */
-  exports: {
-    input: z.infer<TInput>;
-    output: z.infer<TOutput>;
-  };
+  clientTypes: IClientTypes<TInput, TOutput, TMethod, TPath>;
   /**
    * OpenAPI schema for this route
    */
@@ -79,10 +96,12 @@ interface ICreateRequestHandlerReturn<
 
 export const createRequestHandler = <
   TInput extends z.AnyZodObject,
-  TOutput extends z.AnyZodObject
+  TOutput extends z.AnyZodObject,
+  TMethod extends "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  TPath extends string
 >(
-  props: ICreateRequestHandlerProps<TInput, TOutput>
-): ICreateRequestHandlerReturn<TInput, TOutput> => {
+  props: ICreateRequestHandlerProps<TInput, TOutput, TMethod, TPath>
+): ICreateRequestHandlerReturn<TInput, TOutput, TMethod, TPath> => {
   const openAPISchema: oas31.OperationObject = {
     parameters: httpMethodSupportsRequestBody[props.method]
       ? // todo: add support for path parameters
@@ -146,11 +165,12 @@ export const createRequestHandler = <
   };
 
   return {
-    // implementation does not matter
-    // used to export types to the client
-    exports: {
+    clientTypes: {
+      // implementation does not matter
       input: {},
       output: {},
+      method: props.method,
+      path: props.path,
     },
     openAPISchema: merge(openAPISchema, props.openAPISchema),
     handler,
