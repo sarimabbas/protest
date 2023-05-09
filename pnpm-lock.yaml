@@ -57,6 +57,12 @@ importers:
       lodash.merge:
         specifier: ^4.6.2
         version: 4.6.2
+      openapi3-ts:
+        specifier: ^4.1.2
+        version: 4.1.2
+      path-to-regexp:
+        specifier: ^6.2.1
+        version: 6.2.1
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -64,9 +70,6 @@ importers:
       '@types/lodash.merge':
         specifier: ^4.6.7
         version: 4.6.7
-      openapi3-ts:
-        specifier: ^4.1.2
-        version: 4.1.2
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -6876,6 +6879,7 @@ packages:
     resolution: {integrity: sha512-B7gOkwsYMZO7BZXwJzXCuVagym2xhqsrilVvV0dnq2Di4+iLUXKVX9gOK23ZqaAHZOwABXN0QTdW8QnkUTX6DA==}
     dependencies:
       yaml: 2.2.2
+    dev: false
 
   /optionator@0.9.1:
     resolution: {integrity: sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw==}
@@ -7012,6 +7016,10 @@ packages:
 
   /path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
+
+  /path-to-regexp@6.2.1:
+    resolution: {integrity: sha512-JLyh7xT1kizaEvcaXOQwOc2/Yhw6KZOvPf1S8401UyLk86CU79LN3vl7ztXGm/pZ+YjoyAJ4rxmHwbkBXJX+yw==}
+    dev: false
 
   /path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}

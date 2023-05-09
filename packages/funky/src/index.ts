@@ -1,7 +1,7 @@
-export { makeFetcher, IMakeFetcherProps } from "./client";
+export { makeFetcher, type IMakeFetcherProps } from "./client";
 export {
   makeRequestHandler,
-  IMakeRequestHandlerProps,
-  IMakeRequestHandlerReturn,
+  type IMakeRequestHandlerProps,
+  type IMakeRequestHandlerReturn,
 } from "./server";
 export { makeOpenAPISchema } from "./utils";

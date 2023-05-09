@@ -173,6 +173,10 @@ export const makeRequestHandler = <
     if (request.method !== props.method) {
       return commonReponses[405].response();
     }
+    console.log({
+      parsedPath: runPathRegex(request.url, pathRegex.regexp),
+      path: request.url,
+    });
 
     const unsafeData = {
       ...runPathRegex(request.url, pathRegex.regexp),
