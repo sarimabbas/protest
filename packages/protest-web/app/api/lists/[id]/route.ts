@@ -65,44 +65,59 @@ export const { handler: POST, clientTypes } = makeRequestHandler({
   },
 });
 
-export const { handler: GET, openAPIPathsObject: openAPIListGET } =
-  makeRequestHandler({
-    method: "GET",
-    path: "/api/lists/:id",
-    description: "Get a list",
-    input: z.object({
-      id: z.string(),
+export const {
+  handler: GET,
+  openAPIPathsObject: openAPIListGET,
+  clientTypes: listGETTypes,
+} = makeRequestHandler({
+  method: "GET",
+  path: "/api/lists/:id",
+  description: "Get a list",
+  input: z.object({
+    id: z.string(),
+  }),
+  output: z.object({
+    list: z.object({
+      name: z.string().optional(),
     }),
-    output: z.object({
-      items: z.array(
-        z.object({
-          id: z.string(),
-          text: z.string().optional(),
-          url: z.string().optional(),
-        })
-      ),
-    }),
-    run: async ({ input, sendOutput }) => {
-      const content = await xata.db.itemsOnLists
-        .select(["item.*"])
-        .sort("item.createdAt", "desc")
-        .filter({
-          "list.id": input.id,
-        })
-        .getMany();
+    items: z.array(
+      z.object({
+        id: z.string(),
+        text: z.string().optional(),
+        url: z.string().optional(),
+      })
+    ),
+  }),
+  run: async ({ input, sendOutput }) => {
+    const list = await xata.db.lists
+      .filter({
+        id: input.id,
+      })
+      .getFirst();
 
-      const filtered = content
-        .filter((c) => !!c.item)
-        .map((f) => {
-          return {
-            id: f.item!.id,
-            text: f.item!.text ?? undefined,
-            url: f.item!.url ?? undefined,
-          };
-        });
+    const content = await xata.db.itemsOnLists
+      .select(["item.*"])
+      .sort("item.createdAt", "desc")
+      .filter({
+        "list.id": input.id,
+      })
+      .getMany();
 
-      return sendOutput({
-        items: filtered,
+    const filtered = content
+      .filter((c) => !!c.item)
+      .map((f) => {
+        return {
+          id: f.item!.id,
+          text: f.item!.text ?? undefined,
+          url: f.item!.url ?? undefined,
+        };
       });
-    },
-  });
+
+    return sendOutput({
+      list: {
+        name: list?.name ?? undefined,
+      },
+      items: filtered,
+    });
+  },
+});

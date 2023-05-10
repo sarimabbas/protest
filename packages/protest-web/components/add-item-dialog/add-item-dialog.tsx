@@ -21,6 +21,7 @@ import { useRef, useState } from "react";
 import type { itemsPOSTTypes } from "../../app/api/items/route";
 import { apiClient } from "../api-client";
 import { Loader2 } from "lucide-react";
+import { queryClient } from "../client-providers";
 
 interface AddItemDialogProps {
   listId: string;
@@ -34,6 +35,9 @@ export function AddItemDialog(props: AddItemDialogProps) {
 
   const addItem = useMutation({
     mutationFn: apiClient<typeof itemsPOSTTypes>,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["list", props.listId]);
+    },
   });
 
   return (

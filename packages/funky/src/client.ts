@@ -36,13 +36,15 @@ export const makeFetcher = (outerProps: IMakeFetcherProps) => {
     props: Pick<TConfig, "input" | "method" | "path"> & {
       validator?: TConfig["output"];
     }
-  ): Promise<TConfig["output"]> => {
+  ): Promise<z.infer<TConfig["output"]>> => {
     // substitute any path params using the input
     const pathSubstitutor = compile(props.path);
     const substitutedPath = pathSubstitutor(props.input);
 
     // create a ful url to the endpoint
     const url = new URL(substitutedPath, outerProps.baseUrl);
+
+    console.log({ requestTo: url.toString() });
 
     const resp = await fetch(
       // if the method supports a request body, send as JSON

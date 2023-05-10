@@ -82,7 +82,8 @@ export interface IClientTypes<
    * the typescript types for the input
    * exclude the path parameters that are automatically added
    */
-  input: HumanReadable<Omit<z.infer<TInput>, PathParamNames<TPath>>>;
+  // input: HumanReadable<Omit<z.infer<TInput>, PathParamNames<TPath>>>;
+  input: z.infer<TInput>;
   /**
    * the zod schema for the output
    */

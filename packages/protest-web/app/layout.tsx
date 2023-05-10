@@ -24,10 +24,8 @@ export default function RootLayout({
           "flex min-h-screen flex-col px-4 md:px-10 md:py-8 gap-8 container mx-auto"
         )}
       >
-        <ClientProviders>
-          <Navbar />
-          {children}
-        </ClientProviders>
+        <Navbar />
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );
