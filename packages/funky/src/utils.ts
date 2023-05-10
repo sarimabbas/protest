@@ -1,6 +1,10 @@
 import { Key, Path, pathToRegexp, match } from "path-to-regexp";
 import { oas31 } from "openapi3-ts";
 
+export type OpenAPIObject = oas31.OpenAPIObject;
+export type OpenAPIPathsObject = oas31.PathsObject;
+export type OpenAPIPathItemObject = oas31.PathItemObject;
+
 export type HumanReadable<T> = {
   [K in keyof T]: T[K];
 } & {};

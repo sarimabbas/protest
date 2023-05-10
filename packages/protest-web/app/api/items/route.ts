@@ -11,10 +11,11 @@ const xata = getXataClient();
 export const {
   handler: POST,
   clientTypes,
-  openAPIObject,
+  openAPIPathsObject,
 } = makeRequestHandler({
   method: "POST",
   path: "/api/items",
+  authenticate: async () => true,
   description: "Create an item",
   input: z.object({
     listId: z.string(),

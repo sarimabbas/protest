@@ -110,7 +110,7 @@ export interface IMakeRequestHandlerReturn<
   /**
    * OpenAPI schema for this route
    */
-  openAPIObject: oas31.PathsObject;
+  openAPIPathsObject: oas31.PathsObject;
   /**
    * @returns WinterCG compatible handler that you can use in your routes
    */
@@ -253,7 +253,7 @@ export const makeRequestHandler = <
       method: props.method,
       path: props.path,
     },
-    openAPIObject: openAPIPath,
+    openAPIPathsObject: openAPIPath,
     handler,
   };
 };

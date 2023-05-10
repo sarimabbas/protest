@@ -4,4 +4,8 @@ export {
   type IMakeRequestHandlerProps,
   type IMakeRequestHandlerReturn,
 } from "./server";
-export { makeOpenAPISchema } from "./utils";
+export type {
+  OpenAPIObject,
+  OpenAPIPathsObject,
+  OpenAPIPathItemObject,
+} from "./utils";
