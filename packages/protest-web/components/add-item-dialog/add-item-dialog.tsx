@@ -1,6 +1,5 @@
 "use client";
 
-import { createContent } from "@/actions";
 import {
   Button,
   Dialog,
@@ -17,7 +16,11 @@ import {
   TabsTrigger,
   Textarea,
 } from "@protest/shared";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useRef, useState } from "react";
+import type { clientTypes } from "../../app/api/items/route";
+import { apiClient } from "../api-client";
+import { Loader2 } from "lucide-react";
 
 interface AddItemDialogProps {
   listId: string;
@@ -26,6 +29,12 @@ interface AddItemDialogProps {
 
 export function AddItemDialog(props: AddItemDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const urlRef = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLTextAreaElement>(null);
+
+  const addItem = useMutation({
+    mutationFn: apiClient<typeof clientTypes>,
+  });
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -46,30 +55,39 @@ export function AddItemDialog(props: AddItemDialogProps) {
             <TabsTrigger value="text">Text</TabsTrigger>
             <TabsTrigger value="url">URL</TabsTrigger>
           </TabsList>
-          <form action={createContent}>
-            <TabsContent value="text">
-              <Textarea
-                name="text"
-                placeholder="The big brown fox jumped over the lazy dog..."
-              />
-            </TabsContent>
-            <TabsContent value="url">
-              <Input
-                name="url"
-                type="url"
-                placeholder="https://twitter.com/cat/status/123456"
-              />
-            </TabsContent>
-          </form>
+          <TabsContent value="text">
+            <Textarea
+              ref={textRef}
+              placeholder="The big brown fox jumped over the lazy dog..."
+            />
+          </TabsContent>
+          <TabsContent value="url">
+            <Input
+              ref={urlRef}
+              type="url"
+              placeholder="https://twitter.com/cat/status/123456"
+            />
+          </TabsContent>
         </Tabs>
         <DialogFooter>
           <Button
             type="submit"
-            onClick={() => {
+            onClick={async () => {
+              const text = textRef.current?.value;
+              const url = urlRef.current?.value;
+              await addItem.mutateAsync({
+                method: "POST",
+                path: "/api/items",
+                input: {
+                  listId: props.listId,
+                  text,
+                  url,
+                },
+              });
               setIsOpen(false);
             }}
           >
-            Add
+            {addItem.isLoading ? <Loader2 className="animate-spin" /> : "Add"}
           </Button>
         </DialogFooter>
       </DialogContent>

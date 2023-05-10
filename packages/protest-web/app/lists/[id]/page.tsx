@@ -26,6 +26,7 @@ const ListPage = async ({
 
   const content = await xata.db.itemsOnLists
     .select(["item.*"])
+    .sort("item.createdAt", "desc")
     .filter({
       "list.id": params.id,
     })

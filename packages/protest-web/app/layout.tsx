@@ -2,6 +2,7 @@ import { Navbar } from "@/components/navbar";
 import { cn } from "@protest/shared";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ClientProviders } from "@/components/client-providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,8 +24,10 @@ export default function RootLayout({
           "flex min-h-screen flex-col px-4 md:px-10 md:py-8 gap-8 container mx-auto"
         )}
       >
-        <Navbar />
-        {children}
+        <ClientProviders>
+          <Navbar />
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );

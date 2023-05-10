@@ -13,6 +13,12 @@ const tables = [
       { name: "embeddingAda", type: "vector", vector: { dimension: 1536 } },
       { name: "text", type: "text" },
       { name: "url", type: "string" },
+      {
+        name: "createdAt",
+        type: "datetime",
+        notNull: true,
+        defaultValue: "now",
+      },
     ],
   },
   {
