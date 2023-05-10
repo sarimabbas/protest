@@ -35,6 +35,10 @@ export interface IMakeRequestHandlerProps<
    */
   path: TPath;
   /**
+   * optional description
+   */
+  description?: string;
+  /**
    * a callback inside which you can run your logic
    * @returns a response to send back to the client
    */
@@ -60,10 +64,6 @@ export interface IMakeRequestHandlerProps<
       options?: Partial<ResponseInit>
     ) => Promise<Response>;
   }) => Promise<Response>;
-  /**
-   * patch the generated openAPI schema with your own
-   */
-  openAPISchema?: Partial<oas31.PathObject>;
 }
 
 export interface IClientTypes<
@@ -104,7 +104,7 @@ export interface IMakeRequestHandlerReturn<
   /**
    * OpenAPI schema for this route
    */
-  openAPISchema: oas31.PathObject;
+  openAPIObject: oas31.PathsObject;
   /**
    * @returns WinterCG compatible handler that you can use in your routes
    */
@@ -153,25 +153,30 @@ export const makeRequestHandler = <
       }
     : undefined;
 
-  const openAPISchema: oas31.PathObject = {
-    [props.path]: {
-      [props.method.toLowerCase()]: {
-        parameters: openAPIParameters,
-        requestBody: openAPIRequestBody,
-        responses: {
-          200: {
-            description: "Success",
-            content: {
-              "application/json": {
-                schema: generateSchema(props.output),
-              },
-            },
+  const openAPIOperation: oas31.OperationObject = {
+    description: props.description,
+    parameters: openAPIParameters,
+    requestBody: openAPIRequestBody,
+    responses: {
+      200: {
+        description: "Success",
+        content: {
+          "application/json": {
+            schema: generateSchema(props.output),
           },
-          405: commonReponses[405].openAPISchema,
-          400: commonReponses[400].openAPISchema,
         },
       },
+      405: commonReponses[405].openAPISchema,
+      400: commonReponses[400].openAPISchema,
     },
+  };
+
+  const openAPIPathItem: oas31.PathItemObject = {
+    [props.method.toLowerCase()]: openAPIOperation,
+  };
+
+  const openAPIPath: oas31.PathsObject = {
+    [props.path]: openAPIPathItem,
   };
 
   const handler = async (request: Request) => {
@@ -224,7 +229,7 @@ export const makeRequestHandler = <
       method: props.method,
       path: props.path,
     },
-    openAPISchema: merge(openAPISchema, props.openAPISchema),
+    openAPIObject: openAPIPath,
     handler,
   };
 };

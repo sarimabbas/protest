@@ -11,7 +11,7 @@ const xata = getXataClient();
 export const { handler: POST, clientTypes } = makeRequestHandler({
   method: "POST",
   path: "/api/items",
-  openAPISchema: {},
+  description: "Create an item",
   input: z.object({
     listId: z.string(),
     url: z.string().optional(),
