@@ -165,6 +165,7 @@ export const makeRequestHandler = <
     parameters: openAPIParameters,
     requestBody: openAPIRequestBody,
     responses: {
+      // success
       200: {
         description: "Success",
         content: {
@@ -173,9 +174,12 @@ export const makeRequestHandler = <
           },
         },
       },
-      405: commonReponses[405].openAPISchema,
+      // bad request
       400: commonReponses[400].openAPISchema,
-      401: commonReponses[401].openAPISchema,
+      // unauthorized
+      401: props.authenticate ? commonReponses[401].openAPISchema : undefined,
+      // sarim: i don't think we need this
+      // 405: commonReponses[405].openAPISchema,
     },
   };
 
