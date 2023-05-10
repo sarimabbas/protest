@@ -8,7 +8,11 @@ import { z } from "zod";
 
 const xata = getXataClient();
 
-export const { handler: POST, clientTypes } = makeRequestHandler({
+export const {
+  handler: POST,
+  clientTypes,
+  openAPIObject,
+} = makeRequestHandler({
   method: "POST",
   path: "/api/items",
   description: "Create an item",
