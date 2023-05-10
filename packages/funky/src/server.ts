@@ -39,6 +39,12 @@ export interface IMakeRequestHandlerProps<
    */
   description?: string;
   /**
+   * the presence of this property will make the route require bearer authentication
+   * @param request - the request, do whatever you want with it
+   * @returns - if false, the request will be rejected
+   */
+  authenticate?: (request: Request) => Promise<boolean>;
+  /**
    * a callback inside which you can run your logic
    * @returns a response to send back to the client
    */
@@ -155,6 +161,7 @@ export const makeRequestHandler = <
 
   const openAPIOperation: oas31.OperationObject = {
     description: props.description,
+    security: props.authenticate ? [{ bearerAuth: [] }] : undefined,
     parameters: openAPIParameters,
     requestBody: openAPIRequestBody,
     responses: {
@@ -168,6 +175,7 @@ export const makeRequestHandler = <
       },
       405: commonReponses[405].openAPISchema,
       400: commonReponses[400].openAPISchema,
+      401: commonReponses[401].openAPISchema,
     },
   };
 
@@ -180,27 +188,42 @@ export const makeRequestHandler = <
   };
 
   const handler = async (request: Request) => {
-    const clonedRequest = request.clone();
+    const requestForRun = request.clone();
+    const requestForAuth = request.clone();
 
+    // ensure the method is correct
     if (request.method !== props.method) {
       return commonReponses[405].response();
     }
 
+    // ensure authentication is correct
+    if (props.authenticate && !(await props.authenticate(requestForAuth))) {
+      return commonReponses[401].response();
+    }
+
+    // parse the input
     const unsafeData = {
+      // parse input from path parameters
       ...getParamsFromPath(props.path, new URL(request.url).pathname),
+      // parse input from query parameters or body
       ...(httpMethodSupportsRequestBody[request.method as HTTPMethod]
-        ? await request.json()
-        : Object.fromEntries(new URL(request.url).searchParams.entries())),
+        ? // if the method supports a body, parse it
+          await request.json()
+        : // otherwise, parse the query parameters
+          Object.fromEntries(new URL(request.url).searchParams.entries())),
     };
 
+    // parse the input with zod schema
     const parsedData = await props.input.safeParseAsync(unsafeData);
 
+    // if the input is invalid, return a 400
     if (!parsedData.success) {
       return commonReponses[400].response(parsedData.error);
     }
 
     const input = parsedData.data;
 
+    // utility function to send output response
     const sendOutput = async (
       output: z.infer<TOutput>,
       options?: Partial<ResponseInit>
@@ -219,7 +242,8 @@ export const makeRequestHandler = <
       );
     };
 
-    return props.run({ request: clonedRequest, input, sendOutput });
+    // run the user's code
+    return props.run({ request: requestForRun, input, sendOutput });
   };
 
   return {

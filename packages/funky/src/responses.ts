@@ -46,6 +46,12 @@ export const commonReponses = {
         status: 400,
       }),
   },
+  401: {
+    openAPISchema: {
+      description: "Unauthorized",
+    },
+    response: () => new Response(null, { status: 401 }),
+  },
 } satisfies Record<
   string,
   {
