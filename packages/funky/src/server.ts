@@ -128,15 +128,24 @@ export const makeRequestHandler = <
   const openAPIParameters: (oas31.ParameterObject | oas31.ReferenceObject)[] = [
     // query parameters
     ...(!httpMethodSupportsRequestBody[props.method]
-      ? Object.keys(props.input.shape).map((key) => ({
-          name: key,
-          in: "query" as oas31.ParameterLocation,
-          schema: {
-            type: "string" as oas31.SchemaObjectType,
-          },
-        }))
+      ? Object.keys(props.input.shape)
+          // exclude query parameters that are already path parameters
+          .filter((key) => {
+            return !getKeysFromPathPattern(props.path).some(
+              (k) => String(k.name) === key
+            );
+          })
+          .map((key) => {
+            return {
+              name: key,
+              in: "query" as oas31.ParameterLocation,
+              schema: {
+                type: "string" as oas31.SchemaObjectType,
+              },
+            };
+          })
       : []),
-    // path parameters
+    // add path parameters
     ...getKeysFromPathPattern(props.path).map((key) => ({
       name: String(key.name),
       in: "path" as oas31.ParameterLocation,
