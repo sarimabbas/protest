@@ -18,7 +18,7 @@ import {
 } from "@protest/shared";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
-import type { clientTypes } from "../../app/api/items/route";
+import type { itemsPOSTTypes } from "../../app/api/items/route";
 import { apiClient } from "../api-client";
 import { Loader2 } from "lucide-react";
 
@@ -33,7 +33,7 @@ export function AddItemDialog(props: AddItemDialogProps) {
   const textRef = useRef<HTMLTextAreaElement>(null);
 
   const addItem = useMutation({
-    mutationFn: apiClient<typeof clientTypes>,
+    mutationFn: apiClient<typeof itemsPOSTTypes>,
   });
 
   return (

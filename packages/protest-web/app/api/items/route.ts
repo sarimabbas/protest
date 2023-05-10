@@ -10,8 +10,8 @@ const xata = getXataClient();
 
 export const {
   handler: POST,
-  clientTypes,
-  openAPIPathsObject,
+  clientTypes: itemsPOSTTypes,
+  openAPIPathsObject: openAPIItemsPOST,
 } = makeRequestHandler({
   method: "POST",
   path: "/api/items",
