@@ -140,6 +140,9 @@ importers:
       '@sarim.garden/cardboard':
         specifier: ^2.1.3
         version: 2.1.3
+      '@sarim.garden/clover':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@tanstack/react-query':
         specifier: ^4.29.5
         version: 4.29.5(react-dom@18.2.0)(react@18.2.0)
@@ -958,7 +961,7 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
     dependencies:
       eslint: 8.39.0
-      eslint-visitor-keys: 3.4.0
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.40.0):
@@ -2863,6 +2866,16 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       rooks: 7.14.1(react-dom@18.2.0)(react@18.2.0)
+    dev: false
+
+  /@sarim.garden/clover@1.0.0:
+    resolution: {integrity: sha512-FoSP75Pd8oE6kxwF81/GrEWQKGm3cspmari7MYfl5CZtuQyU1LYJXpkqSeqg6IcP3w96A1noJyRhRhfQGYXj4w==}
+    dependencies:
+      '@anatine/zod-openapi': 1.12.1(openapi3-ts@4.1.2)(zod@3.21.4)
+      lodash.merge: 4.6.2
+      openapi3-ts: 4.1.2
+      path-to-regexp: 6.2.1
+      zod: 3.21.4
     dev: false
 
   /@sindresorhus/is@4.6.0:
@@ -5389,7 +5402,7 @@ packages:
     dependencies:
       acorn: 8.8.2
       acorn-jsx: 5.3.2(acorn@8.8.2)
-      eslint-visitor-keys: 3.4.0
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /espree@9.5.2:

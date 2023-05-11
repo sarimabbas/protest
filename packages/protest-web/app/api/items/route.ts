@@ -2,7 +2,7 @@ import { openAI } from "@/openai";
 import { ItemsRecord, getXataClient } from "@/xata";
 import mql from "@microlink/mql";
 import { SelectedPick } from "@xata.io/client";
-import { makeRequestHandler } from "funky";
+import { makeRequestHandler } from "@sarim.garden/clover";
 import normalizeUrl from "normalize-url";
 import { z } from "zod";
 

@@ -1,7 +1,7 @@
 import { openAI } from "@/openai";
 import { getXataClient } from "@/xata";
 import { IOutputItem, ZPOSTBody, ZPOSTResponse } from "@protest/shared";
-import { makeRequestHandler } from "funky";
+import { makeRequestHandler } from "@sarim.garden/clover";
 import { z } from "zod";
 
 const xata = getXataClient();

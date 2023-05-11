@@ -1,4 +1,4 @@
-import { OpenAPIObject, OpenAPIPathsObject } from "funky";
+import { OpenAPIObject, OpenAPIPathsObject } from "@sarim.garden/clover";
 import { NextResponse } from "next/server";
 import { openAPIItemsPOST } from "../items/route";
 import { openAPIListGET } from "../lists/[id]/route";
