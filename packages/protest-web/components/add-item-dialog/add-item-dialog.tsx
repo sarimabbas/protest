@@ -34,7 +34,7 @@ export function AddItemDialog(props: AddItemDialogProps) {
   const textRef = useRef<HTMLTextAreaElement>(null);
 
   const addItem = useMutation({
-    mutationFn: apiClient<typeof itemsPOSTTypes>,
+    mutationFn: apiClient<itemsPOSTTypes>,
     onSuccess: () => {
       queryClient.invalidateQueries(["list", props.listId]);
     },

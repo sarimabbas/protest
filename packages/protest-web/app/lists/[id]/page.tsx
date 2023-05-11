@@ -1,6 +1,6 @@
 "use client";
 
-import { listGETTypes } from "@/app/api/lists/[id]/route";
+import type { openAPIListGETTypes } from "@/app/api/lists/[id]/route";
 import { AddItemDialog } from "@/components/add-item-dialog";
 import { apiClient } from "@/components/api-client";
 import { ItemCard } from "@/components/item-card";
@@ -12,7 +12,7 @@ const ListPage = () => {
   const { id } = useParams();
   const { data } = useQuery({
     queryFn: async () =>
-      apiClient<typeof listGETTypes>({
+      apiClient<openAPIListGETTypes>({
         input: {
           id,
         },

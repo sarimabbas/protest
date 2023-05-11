@@ -8,11 +8,7 @@ import { z } from "zod";
 
 const xata = getXataClient();
 
-export const {
-  handler: POST,
-  clientTypes: itemsPOSTTypes,
-  openAPIPathsObject: openAPIItemsPOST,
-} = makeRequestHandler({
+const { handler, clientTypes, openAPIPathsObject } = makeRequestHandler({
   method: "POST",
   path: "/api/items",
   authenticate: async () => true,
@@ -90,3 +86,6 @@ export const {
     });
   },
 });
+
+export { handler as POST, openAPIPathsObject as openAPIItemsPOST };
+export type itemsPOSTTypes = typeof clientTypes;
