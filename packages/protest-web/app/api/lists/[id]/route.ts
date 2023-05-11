@@ -7,7 +7,7 @@ import { z } from "zod";
 const xata = getXataClient();
 
 // used by the extension to check content against embeddings
-const { handler: checkContentHandler, clientTypes: checkContentClientTypes } =
+const { handler: checkContentHandler, clientConfig: checkContentClientTypes } =
   makeRequestHandler({
     method: "POST",
     path: "/api/lists/:id",
@@ -72,7 +72,7 @@ export type clientTypes = typeof checkContentClientTypes;
 const {
   handler: getListHandler,
   openAPIPathsObject: openAPIListGET,
-  clientTypes: getListClient,
+  clientConfig: getListClient,
 } = makeRequestHandler({
   method: "GET",
   path: "/api/lists/:id",
