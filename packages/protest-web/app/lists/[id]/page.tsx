@@ -1,47 +1,48 @@
-"use client";
-
-import type { openAPIListGETTypes } from "@/app/api/lists/[id]/route";
 import { AddItemDialog } from "@/components/add-item-dialog";
-import { apiClient } from "@/components/api-client";
-import { ItemCard } from "@/components/item-card";
+import { ItemCardGrid } from "@/components/item-card-grid";
+import { getXataClient } from "@/xata";
 import { CardboardProvider } from "@sarim.garden/cardboard";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
 
-const ListPage = () => {
-  const { id } = useParams();
-  const { data } = useQuery({
-    queryFn: async () =>
-      apiClient<openAPIListGETTypes>({
-        input: {
-          id,
-        },
-        method: "GET",
-        path: `/api/lists/:id`,
-      }),
-    queryKey: ["list", id],
-    enabled: !!id,
-  });
+const xata = getXataClient();
+
+const ListPage = async ({
+  params,
+}: {
+  params: {
+    id: string;
+  };
+}) => {
+  const { id } = params;
+  const list = await xata.db.lists
+    .filter({
+      id,
+    })
+    .getFirst();
+
+  const content = await xata.db.itemsOnLists
+    .select(["item.*"])
+    .sort("item.createdAt", "desc")
+    .filter({
+      "list.id": id,
+    })
+    .getMany();
+
+  const mapped = content.map((c) => ({
+    id: c.id,
+    item: {
+      text: c.item?.text ?? "",
+      url: c.item?.url ?? "",
+    },
+  }));
 
   return (
     <div className="flex flex-col gap-8 md:px-8">
       <div className="flex justify-between flex-wrap items-center">
-        <h1 className="text-xl font-bold">{data?.list?.name}</h1>
+        <h1 className="text-xl font-bold">{list?.name}</h1>
         <AddItemDialog listId={id} />
       </div>
       <CardboardProvider>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data?.items.map((c) => {
-            return (
-              <ItemCard
-                id={c.id}
-                key={c.id}
-                text={c.text ?? ""}
-                url={c.url ?? ""}
-              />
-            );
-          })}
-        </div>
+        <ItemCardGrid content={mapped} />
       </CardboardProvider>
     </div>
   );
