@@ -37,13 +37,16 @@ const ListPage = async ({
 
   return (
     <div className="flex flex-col gap-8 md:px-8">
+      <h1 className="text-2xl font-bold">{list?.name}</h1>
       <div className="flex justify-between flex-wrap items-center">
-        <h1 className="text-xl font-bold">{list?.name}</h1>
+        <h2 className="text-xl font-semibold">Content</h2>
         <AddItemDialog listId={id} />
       </div>
-      <CardboardProvider>
-        <ItemCardGrid content={mapped} />
-      </CardboardProvider>
+      <div className="max-h-[800px] overflow-y-auto rounded-md border-yellow-400 p-4 border-8">
+        <CardboardProvider>
+          <ItemCardGrid content={mapped} />
+        </CardboardProvider>
+      </div>
     </div>
   );
 };
