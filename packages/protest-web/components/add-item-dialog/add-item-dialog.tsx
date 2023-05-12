@@ -1,5 +1,6 @@
 "use client";
 
+import { addItem } from "@/app/actions";
 import {
   Button,
   Dialog,
@@ -16,12 +17,9 @@ import {
   TabsTrigger,
   Textarea,
 } from "@protest/shared";
-import { useMutation } from "@tanstack/react-query";
-import { useRef, useState } from "react";
-import type { itemsPOSTTypes } from "../../app/api/items/route";
-import { apiClient } from "../api-client";
 import { Loader2 } from "lucide-react";
-import { queryClient } from "../client-providers";
+import { useRef, useState } from "react";
+import { useZact } from "zact/client";
 
 interface AddItemDialogProps {
   listId: string;
@@ -32,13 +30,7 @@ export function AddItemDialog(props: AddItemDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const urlRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
-
-  const addItem = useMutation({
-    mutationFn: apiClient<itemsPOSTTypes>,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["list", props.listId]);
-    },
-  });
+  const { mutate, isLoading } = useZact(addItem);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -79,19 +71,15 @@ export function AddItemDialog(props: AddItemDialogProps) {
             onClick={async () => {
               const text = textRef.current?.value;
               const url = urlRef.current?.value;
-              await addItem.mutateAsync({
-                method: "POST",
-                path: "/api/items",
-                input: {
-                  listId: props.listId,
-                  text,
-                  url,
-                },
+              await mutate({
+                listId: props.listId,
+                text,
+                url,
               });
               setIsOpen(false);
             }}
           >
-            {addItem.isLoading ? <Loader2 className="animate-spin" /> : "Add"}
+            {isLoading ? <Loader2 className="animate-spin" /> : "Add"}
           </Button>
         </DialogFooter>
       </DialogContent>
